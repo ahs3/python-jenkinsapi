@@ -1,0 +1,3 @@
+[console_scripts]
+jenkins_invoke = jenkinsapi.command_line.jenkins_invoke:main
+
