@@ -7,7 +7,7 @@ Standards-Version: 3.9.3
 Homepage: http://pypi.python.org/pypi/jenkinsapi
 
 Package: python-jenkinsapi
-Architecture: any
+Architecture: all
 Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
 Description: bindings for Python usage of the Jenkins remote API
  Jenkins is the market leading continuous integration system, originally
