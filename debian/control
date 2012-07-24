@@ -5,7 +5,6 @@ Maintainer: Al Stone <ahs3@debian.org>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.3
 Homepage: http://pypi.python.org/pypi/jenkinsapi
-X-Python-Version: >= 2.7
 
 Package: python-jenkinsapi
 Architecture: any
