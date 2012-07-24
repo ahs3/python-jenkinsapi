@@ -1,0 +1,5 @@
+python-jenkinsapi (0.1.11-1) unstable; urgency=low
+
+  * Initial release (Closes: #682114)
+
+ -- Al Stone <ahs3@debian.org>  Tue, 24 Jul 2012 16:40:44 -0600

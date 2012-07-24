@@ -1,0 +1,24 @@
+Source: python-jenkinsapi
+Section: python
+Priority: optional
+Maintainer: Al Stone <ahs3@debian.org>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: http://pypi.python.org/pypi/jenkinsapi
+X-Python-Version: >= 2.7
+
+Package: python-jenkinsapi
+Architecture: any
+Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Description: bindings for Python usage of the Jenkins remote API
+ Jenkins is the market leading continuous integration system, originally
+ created by Kohsuke Kawaguchi. This API makes Jenkins even easier to use
+ by providing an easy to use conventional Python interface.
+ .
+ Jenkins (and its predecessor Hudson) are useful projects for automating
+ common development tasks (e.g., unit-testing, production batches) - but
+ they are somewhat Java-centric. Thankfully the designers have provided
+ an excellent and complete REST interface. This library wraps up that
+ interface as more conventional Python objects in order to make most
+ Jenkins-oriented tasks simpler.
+
