@@ -8,7 +8,7 @@ Standards-Version: 3.9.3
 Homepage: http://pypi.python.org/pypi/jenkinsapi
 
 Package: python-jenkinsapi
-Architecture: any
+Architecture: all
 Depends: python-lxml, python-bs4, ${python:Versions}, ${python:Depends},
  ${misc:Depends}
 Provides: ${python:Provides}
