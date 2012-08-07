@@ -1,7 +1,9 @@
 python-jenkinsapi (0.1.11-2) unstable; urgency=low
 
   * Replace usage of python-support with dh_python2
-  * Closes: #683460 -- missing dependencies
+  * Closes: #683458 -- now that dh_python2 is being used, package is
+    being built correctly and is no longer empty on rebuild
+  * Closes: #683460 -- corrected package dependencies
 
  -- Al Stone <ahs3@debian.org>  Mon, 06 Aug 2012 20:30:56 -0600
 
