@@ -9,7 +9,8 @@ Homepage: http://pypi.python.org/pypi/jenkinsapi
 
 Package: python-jenkinsapi
 Architecture: any
-Depends: python-lxml, python-bs4, ${python:Versions}, ${python:Depends}
+Depends: python-lxml, python-bs4, ${python:Versions}, ${python:Depends},
+ ${misc:Depends}
 Provides: ${python:Provides}
 Description: bindings for Python usage of the Jenkins remote API
  Jenkins is the market leading continuous integration system, originally
