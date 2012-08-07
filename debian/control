@@ -7,8 +7,9 @@ Standards-Version: 3.9.3
 Homepage: http://pypi.python.org/pypi/jenkinsapi
 
 Package: python-jenkinsapi
-Architecture: all
-Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Architecture: any
+Depends: python-lxml, python-bs4,
+ ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
 Description: bindings for Python usage of the Jenkins remote API
  Jenkins is the market leading continuous integration system, originally
  created by Kohsuke Kawaguchi. This API makes Jenkins even easier to use
