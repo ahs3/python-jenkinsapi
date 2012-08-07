@@ -1,3 +1,9 @@
+python-jenkinsapi (0.1.11-3) unstable; urgency=low
+
+  * Closes: #684145 -- dumb mistake, forgot a build-dep 
+
+ -- Al Stone <ahs3@debian.org>  Tue, 07 Aug 2012 11:52:19 -0600
+
 python-jenkinsapi (0.1.11-2) unstable; urgency=low
 
   * Replace usage of python-support with dh_python2
