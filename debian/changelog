@@ -1,7 +1,8 @@
 python-jenkinsapi (0.1.11-4) unstable; urgency=low
 
   * Closes: #684304 -- managed to depend on python 2.6 and 2.7 at
-    the same time
+    the same time with overzealous use of ${python:Versions} in the
+    control file.
 
  -- Al Stone <ahs3@debian.org>  Wed, 08 Aug 2012 10:40:55 -0600
 
