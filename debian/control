@@ -2,7 +2,7 @@ Source: python-jenkinsapi
 Section: python
 Priority: optional
 Maintainer: Al Stone <ahs3@debian.org>
-Build-Depends: debhelper (>= 8.0.0), python-all, python-lxml, python-setuptools
+Build-Depends: debhelper (>= 8.0.0), python-all-dev, python-lxml, python-setuptools
 XS-Python-Version: current
 Standards-Version: 3.9.5
 Homepage: http://pypi.python.org/pypi/jenkinsapi
