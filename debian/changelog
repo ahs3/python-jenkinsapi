@@ -1,3 +1,9 @@
+python-jenkinsapi (0.2.16-2) unstable; urgency=medium
+
+  * Closes: #734433 -- "Python-Versions" not "Python-Verions".
+
+ -- Al Stone <ahs3@debian.org>  Tue, 07 Jan 2014 10:54:52 -0700
+
 python-jenkinsapi (0.2.16-1) unstable; urgency=medium
 
   * Update to latest upstream.
