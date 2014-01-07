@@ -1,3 +1,10 @@
+python-jenkinsapi (0.2.16-1) unstable; urgency=medium
+
+  * Update to latest upstream.
+  * Closes: #725589 -- FTBS due to unexpected upstream changes
+
+ -- Al Stone <ahs3@debian.org>  Mon, 06 Jan 2014 18:12:26 -0700
+
 python-jenkinsapi (0.1.11-5) unstable; urgency=low
 
   * Correct Build-Depends for dh addon.
