@@ -3,6 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Al Stone <ahs3@debian.org>
 Build-Depends: debhelper (>= 8.0.0), python-all, python-lxml, python-setuptools
+XS-Python-Version: current
 Standards-Version: 3.9.5
 Homepage: http://pypi.python.org/pypi/jenkinsapi
 
@@ -11,6 +12,7 @@ Architecture: all
 Depends: python-lxml, python-bs4, python-pkg-resources,
  ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
+XB-Python-Verions: ${python:Versions}
 Description: bindings for Python usage of the Jenkins remote API
  Jenkins is the market leading continuous integration system, originally
  created by Kohsuke Kawaguchi. This API makes Jenkins even easier to use
