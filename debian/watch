@@ -1,4 +1,4 @@
 # Compulsory line, this is a version 3 file
 version=3
-http://pypi.python.org/pypi/jenkinsapi \
-(?:|.*/)(?:python-jenkinsapi|jenkinsapi)[_\-]v?(\d\S*)\.(?:tar\.xz|txz|tar\.bz2|tbz2|tar\.gz|tgz)
+https://pypi.python.org/packages/source/j/jenkinsapi \
+(?:|.*/)jenkinsapi-(\d\S*)\.(?:tar\.xz|txz|tar\.bz2|tbz2|tar\.gz|tgz).*
