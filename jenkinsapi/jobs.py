@@ -10,17 +10,20 @@ log = logging.getLogger(__name__)
 
 
 class Jobs(object):
+
     """
     This class provides a container-like API which gives
     access to all jobs defined on the Jenkins server. It behaves
     like a dict in which keys are Job-names and values are actual
     jenkinsapi.Job objects.
     """
+
     def __init__(self, jenkins):
         self.jenkins = jenkins
+        self.jenkins.poll()
 
     def __len__(self):
-        return len(self.keys)
+        return len(self.keys())
 
     def __delitem__(self, job_name):
         """
@@ -28,15 +31,28 @@ class Jobs(object):
         :param job_name: name of a exist job, str
         """
         if job_name in self:
-            delete_job_url = self[job_name].get_delete_url()
-            self.jenkins.requester.post_and_confirm_status(
-                delete_job_url,
-                data='some random bytes...'
-            )
+            try:
+                delete_job_url = self[job_name].get_delete_url()
+                self.jenkins.requester.post_and_confirm_status(
+                    delete_job_url,
+                    data='some random bytes...'
+                )
+            except JenkinsAPIException:
+                # Sometimes jenkins throws NPE when removing job
+                # It removes job ok, but it is good to be sure
+                # so we re-try if job was not deleted
+                self.jenkins.poll()
+                if job_name in self:
+                    delete_job_url = self[job_name].get_delete_url()
+                    self.jenkins.requester.post_and_confirm_status(
+                        delete_job_url,
+                        data='some random bytes...'
+                    )
+
             self.jenkins.poll()
 
     def __setitem__(self, key, value):
-        raise NotImplementedError()
+        return self.create(key, value)
 
     def __getitem__(self, job_name):
         for row in self.jenkins._data.get('jobs', []):
@@ -89,8 +105,14 @@ class Jobs(object):
             return self[job_name]
 
         params = {'name': job_name}
-        if isinstance(config, unicode):
-            config = str(config)
+        try:
+            if isinstance(
+                    config, unicode):  # pylint: disable=undefined-variable
+                config = str(config)
+        except NameError:
+            # Python3 already a str
+            pass
+
         self.jenkins.requester.post_xml_and_confirm_status(
             self.jenkins.get_create_url(),
             data=config,
