@@ -1,3 +1,12 @@
+python-jenkinsapi (0.2.29-1) unstable; urgency=medium
+
+  * Update to latest upstream.
+  * Update watch file.
+  * Closes: #754802 -- unusual field Python-Versions; removed, since this
+    was a typo, and the original control file field has been deprecated
+
+ -- ahs3 <ahs3@debian.org>  Thu, 19 Nov 2015 20:45:14 -0700
+
 python-jenkinsapi (0.2.16-2) unstable; urgency=medium
 
   * Closes: #734433 -- "Python-Versions" not "Python-Verions".
