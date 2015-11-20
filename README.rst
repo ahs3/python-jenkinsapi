@@ -7,8 +7,12 @@ jenkinsapi
 .. image:: https://travis-ci.org/salimfadhley/jenkinsapi.png?branch=master
         :target: https://travis-ci.org/salimfadhley/jenkinsapi
 
-.. image:: https://pypip.in/d/jenkinsapi/badge.png
-        :target: https://crate.io/packages/jenkinsapi/
+.. image:: https://landscape.io/github/salimfadhley/jenkinsapi/master/landscape.png
+        :target: https://landscape.io/github/salimfadhley/jenkinsapi
+
+.. image:: https://requires.io/github/salimfadhley/jenkinsapi/requirements.png?branch=master
+        :target: https://requires.io/github/salimfadhley/jenkinsapi/requirements/?branch=master
+        :alt: Requirements Status
 
 About this library
 -------------------
@@ -17,28 +21,40 @@ Jenkins is the market leading continuous integration system, originally created 
 
 Jenkins (and It's predecessor Hudson) are useful projects for automating common development tasks (e.g. unit-testing, production batches) - but they are somewhat Java-centric. Thankfully the designers have provided an excellent and complete REST interface. This library wraps up that interface as more conventional python objects in order to make many Jenkins oriented tasks easier to automate.
 
-This library can help you:
+This library allows you to automate most common Jenkins operations using Python.
 
- * Query the test-results of a completed build
- * Get a objects representing the latest builds of a job
- * Search for artefacts by simple criteria
- * Block until jobs are complete
- * Install artefacts to custom-specified directory structures
- * username/password auth support for jenkins instances with auth turned on
- * Ability to search for builds by subversion revision
- * Ability to add/remove/query Jenkins slaves
- * Ability to add/remove/modify Jenkins views
+* Ability to add/remove/query Jenkins jobs
+* Ability to execute jobs and:
+    * Query the results of a completed build
+    * Block until jobs are complete or run jobs asyncronously
+    * Get objects representing the latest builds of a job
+* Work with build artefacts:
+    * Search for artefacts by simple criteria
+    * Install artefacts to custom-specified directory structures
+* Ability to search for builds by source code revision
+* Ability to add/remove/query:
+    * Slaves (Webstart and SSH slaves)
+    * Views (including nested views using NestedViews Jenkins plugin)
+    * Credentials (username/password and ssh key)
+* Username/password auth support for jenkins instances with auth turned on
+* Ability to script jenkins installation including plugins
 
-Known bugs
-----------
- [ ] Currently incompatible with Jenkins > 1.518. Job deletion operations fail unless Cross-Site scripting protection is disabled.
+Python versions
+---------------
 
- For other issues, please refer to the support URL below.
+The project have been tested and working on Python 2.7, 3.3 and 3.4.
+It was tested previously on Python 2.6, so it may work on this version too.
+
+Known issues
+------------
+* Job deletion operations fail unless Cross-Site scripting protection is disabled.
+
+For other issues, please refer to the support URL below.
 
 Important Links
 ---------------
 
-Support & bug-reportst: https://github.com/salimfadhley/jenkinsapi/issues?direction=desc&sort=comments&state=open
+Support and bug-reports: https://github.com/salimfadhley/jenkinsapi/issues?direction=desc&sort=comments&state=open
 
 Project source code: github: https://github.com/salimfadhley/jenkinsapi
 
@@ -84,7 +100,7 @@ Example
 
 JenkinsAPI is intended to map the objects in Jenkins (e.g. Builds, Views, Jobs) into easily managed Python objects:
 
-.. code-block:: pycon
+.. code-block:: python
 
 	>>> import jenkinsapi
 	>>> from jenkinsapi.jenkins import Jenkins
@@ -98,6 +114,8 @@ JenkinsAPI is intended to map the objects in Jenkins (e.g. Builds, Views, Jobs) 
 	>>> J['test_jenkinsapi'].get_last_good_build()
 	<jenkinsapi.build.Build test_jenkinsapi #77>
 	...
+
+More examples available on Github: https://github.com/salimfadhley/jenkinsapi/tree/master/examples
 
 Testing
 -------
@@ -118,22 +136,20 @@ missing test dependencies:
         source .venv/bin/active
         (venv) python setup.py test
 
-
-
 Project Contributors
 --------------------
 
- * Salim Fadhley (sal@stodge.org)
- * Ramon van Alteren (ramon@vanalteren.nl)
- * Ruslan Lutsenko (ruslan.lutcenko@gmail.com)
- * Cleber J Santos (cleber@simplesconsultoria.com.br)
- * William Zhang (jollychang@douban.com)
- * Victor Garcia (bravejolie@gmail.com)
- * Bradley Harris (bradley@ninelb.com)
- * Aleksey Maksimov (ctpeko3a@gmail.com)
- * Kyle Rockman (kyle.rockman@mac.com)
- * Sascha Peilicke (saschpe@gmx.de)
- * David Johansen (david@makewhat.is)
+* Salim Fadhley (sal@stodge.org)
+* Aleksey Maksimov (ctpeko3a@gmail.com)
+* Ramon van Alteren (ramon@vanalteren.nl)
+* Ruslan Lutsenko (ruslan.lutcenko@gmail.com)
+* Cleber J Santos (cleber@simplesconsultoria.com.br)
+* William Zhang (jollychang@douban.com)
+* Victor Garcia (bravejolie@gmail.com)
+* Bradley Harris (bradley@ninelb.com)
+* Kyle Rockman (kyle.rockman@mac.com)
+* Sascha Peilicke (saschpe@gmx.de)
+* David Johansen (david@makewhat.is)
 
 Please do not contact these contributors directly for support questions! Use the GitHub tracker instead.
 
