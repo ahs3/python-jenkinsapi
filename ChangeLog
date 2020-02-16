@@ -1,0 +1,1134 @@
+CHANGES
+=======
+
+0.3.11
+------
+
+* jobs.py: don't yield jobs twice (#740)
+* Add debug log message in JenkinsBase.process\_job\_folder to follow execution progress (#738)
+* don't faile when node\_descriprion is missing (#737)
+* Fix safe exit test (#736)
+* don't stale feature requests or "help wanted"
+* change label for stale issues
+* Fixed idle state not being refreshed (#575)
+* Simple plugins (#735)
+
+0.3.10
+------
+
+* Add method for streaming build logs (#722)
+* add instructions for Stale bot
+* Fixed problems with changeSets (#717)
+* Create Node by providing predetermined configuration (#730)
+* Fix plugin versions (#734)
+* Updates Requester to use a Session, maintaining cookies (#727)
+* Feature/multibranch pipeline job (#715)
+* Fix failures caused by plugins (#718)
+* Fix for build.get\_artifacts() (#712)
+* Add safe exit (#700)
+* simplify crumb usage (#704)
+* generate new api token for logged in user (#706)
+* ignore dot files (#705)
+
+0.3.9
+-----
+
+* Updated password
+* url encode folder name, to fix forward slashes (#702)
+* Add new method to create job and use it to speedup QueueItem (#699)
+* See if Jenkins is lazy when loading build history (#698)
+* Removed python 3.4 and added 3.7 (#695)
+* Proposed CloudBees integration fix to job.invoke. (#693)
+* Fix pylint errors (#694)
+* Add authentication system tests (#686)
+* Use session id cookie to improve performace (#685)
+* Parameterize war-filename and locally save hpi-files (#684)
+
+0.3.8
+-----
+
+* Fixed typos noticed when reading the file. (#680)
+* Support keyworded variables for requester, fixes #679 (#682)
+
+0.3.7
+-----
+
+* re-encrypt password
+* change password again
+* Plugin delete (#674)
+* disable pyling check of unnecessary-pass
+* Updated pypi password
+* set travis to release on tag
+* Add future improvement line
+* add dependency plugin: trilead-api
+* Removed unused files
+* add try except for func create (#675)
+* Removed unused file
+* Skip test on release stage
+* Add method to update offline reason for a node. (#613)
+* Support SSH credential update (#619)
+* add ability to keep build forever (#672)
+* Handle changesets returned by Jenkins job that use Pipeline (#654)
+* Change pylint command line (#671)
+* update README dev guide (#667)
+* Fix a lot of warnings (#662)
+* Remove ssh credentials no longer supported by ssh credentials plugin (#657)
+* Update link to travis
+* Expanded test coverage for view.py (#646)
+* Python 3.6 and 3.7 support (#641)
+* changed requirements to support 3.6 and immediate testing
+* Changing to  \*args and \*\*kwargs in requester init. Fixing TypeError bug (#640)
+* Retrieve git repo url for a given build (#634)
+* Get Build url for a given build object (#635)
+* Add support for client side certificates, closes #632
+* add View.remove\_job
+* Add new method Jenkins.run\_groovy\_script(self, script) for running arbitrary groovy scripts on the Jenkins server. This fixes #601
+* Add additional methods Nodes.items(), Nodes.itervalues() and Nodes.values() to match the methods provided by the built in dict class
+* Add docstrings for Nodes.keys(), Nodes.iterkeys() and Nodes.iteritems()
+* Added a tests for Nodes.iterkeys(), Nodes.keys() and Nodes.iteritems()
+* Move common Node creation functionality out of Nodes.iteritems and Nodes.\_\_getitem\_\_ and in to its own private \_make\_node function
+* Added methods to Node for querying information stored in the monitors section of the api tree. These allow the querying of:  - The node's available and total physical memory.  - The node's available and total swap space.  - The local path of the node's workspace area.  - The size of the node's workspace area.  - The local path of the node's temporary area.  - The size of the node's temporary area.  - The node's architecture (eg. "Linux").  - The node's average response time.  - The clock difference between the node and the Jenkins master
+* update xml version
+* ignore not relevant pylint checks
+* add QueueItem.is\_queued() and test for it
+* Small Nodes refactoring
+* Fix arguments passed in how\_to/use\_crumbs.py
+* typo
+* Add link to full docs in README
+* backwards compatible get\_credentials
+* Fix pylint errors
+* Fetch, update or create credentials by id instead of description
+* init QueueItem properly
+* fix inconsistent return values
+* update examples information and add example for CrumbRequestor
+
+0.3.6
+-----
+
+* add release to pypi from Travis
+* don't check for redefined built-ins
+* fix lint
+* converted tests to pytest
+* add missing imports and fix code formatting
+* Add jsonp\_to\_json module docstring
+* Move Manifest parsing code to utils/manifest.py
+* Add unittests for installed plugin version
+* Fix Plugin Manifest parsing, plugin install status
+* Add 500 to allowed status codes while restarting
+* Move update\_center\_dict handling to Plugins class, hopefully fix wrong version issues by restarting after install
+* Optimize \_wait\_for\_reboot
+* Lint fixes and decode bytestring
+* Add plugin uninstall; install exact versions
+* Fix credentials update test
+* Credentials update support
+* disable master executors temporary to let test pass
+* add codecov dependency and env variables for it
+* add timeout parameter to Jenkins object
+* Fixes pycontribs/jenkinsapi#530. It's possible for queued tasks to be unnamed. This is the case when using Pipeline jobs. Check that tasks have names before referring to it
+* Close #583: Handle parameters with secret values
+* disable logging from requests
+* reset executors to test queue
+* remove encode to utf when posting config.xml
+* add new plugin dependencies, fix all tests
+* change disabled job detection (#543)
+* Add support for AWS Credentials (#572)
+* Fix bug when using private key file(on master) to create ssh credential. (#573)
+* Added missing plugin and changed wait for restart test (#579)
+* Enabled 5 retries at request lib level
+* Add missing packages from package
+* Add Jenkins pipeline linter
+
+0.3.5
+-----
+
+* Adopt pbr
+* Dropped support for Jenkins 1.x
+* EnvInject v2.0 now has security settings - add this
+* Select jdk8 for build
+* set java version to use in Travis
+* fix security settings json
+* fix: linting (#561)
+* Add estimated duration accessor to build class (#555)
+* Increment version
+
+0.3.4
+-----
+
+* fix security json for 2.x Jenkins (#541)
+* Add support for jobs in folders
+* Remove .tags
+* Update test case for node management
+* Enable config Tool Locations for jenkins node
+* fix spelling of artefact to artifact
+* Correct typo (#531)
+* Add get\_env\_vars to Build
+* Close #522 Only use parameter actions to access parameters. (#524)
+* Add ability in Node to upload a config xml (#515)
+* Allow fn changes on save (#518)
+* Fix source code url. (#521)
+* fix up tox (#523)
+* Update index.rst
+* Migrate to six (#507)
+* Set to use latest pylint
+* Removed test
+* Converted test\_job\_folders
+* Converted most of the tests to pytest (#508)
+* Changes based on code review
+* Added codecov library
+* Changed call to codecov
+* Removed "isinstance() is True"
+* Moved unit test to systest
+* Partially converted to pytest
+* Added asserts for file creation
+* Removed unittest that is covered by systest
+* Converted test\_job
+* Converter test\_requester.py
+* Converted test\_nodes
+* Converted test\_node
+* Converted test\_misc
+* Deleted unused and duplicated tests, converted test\_label
+* Converted to pytest
+* Renamed all one letter variables
+* Minor change to make pylint happier
+* Fixed identation
+* Converted new tests after merge from master
+* Fixed failing test
+* Converted test\_job.py to pytest
+* Converted test\_jenkins.py to pytest
+* Fixed import
+* Converted test\_executors to pytest
+* Converter test\_build\_scm\_git to pytest
+* Converter test\_job and moved job/build configs to separate file
+* Fixed problematic merge
+* Made pylint happier
+* Fixed tests for py 3.x
+* Ignore temp folder removal errors
+* Fixed launcher
+* Added thread.stop
+* Added Jenkins plugin
+* Removed python 3.3, added 3.5
+* Renamed exception
+* Converted systests to pytest
+
+0.3.3
+-----
+
+* Adding newline at end of file
+* And exit 1..
+* Should be echo, not error
+* Now using either wget or curl to download the jenkins.war
+* Adds correct build information to Build.get\_artifacts
+* Cleaned up examples and added example of running job via invoke
+* Fix 'get\_build\_by\_params' method (#506)
+* Implement \`Secret text\` credential (#504)
+* add utf8 encoding to support invoking jobs with unicode build params (#500)
+* Add the relative path for artifacts (#497)
+* When job is invoked with file param http headers will be now set (#494)
+* Delete build (#493)
+* Added tests for issue #487 (#490)
+* Add ability to retrieve build by params (#488)
+* Added check for missing "firstBuild" item (#482)
+
+0.3.2
+-----
+
+* Incremented version
+* Strict artefact systest (#480)
+* Changes badge and cleaned up TODO
+* Added CrumbRequester (#479)
+* Fixed get\_config() for jobs returned from view (#478)
+
+0.3.1
+-----
+
+* Version 0.30.1
+* Restored old way of finding jobs (#477)
+* Added issue template
+* Fixed broken link in cancel item from queue
+* Removed pypi upload
+* Added codecov, removed coveralls
+* Added coveralls integration
+* Fixed failing tests on Jenkins 2.0 (#473)
+
+0.3.0
+-----
+
+* Categorized view plugin support and change View#add\_job approach (#468)
+* Added tests for adding jobs to view (#469)
+* Normalized version
+* Set version to 0.3.00 and cleaned up a bit
+* Added PYPI deploy from travis on new tags
+* Changed all links to point to pycontribs
+* Fix job search (#465)
+* Fix for broken build.stop() function with Jenkins 2.x (#464)
+* Add support for retrieve info for Label (#459)
+* Fixed for Credentials 2.x plugin (#460)
+* Adding a why property to a queueitem object (#456)
+* Fixed pylint errors
+* Make parameterized builds with file params work
+* Do not ignore tree parameter to poll
+* Moved unit tests to systests
+* Changed poll: do not delegate to parent class
+* Proper handling of self.url
+* Delegated all job operations to Jobs object
+* Job object now able to find job url by asking server Fixed bug in Jobs object
+* Set Jenkins obj to ask server for limited info Changed folder processing to make it work if jobs dict don't have url
+* Optimizations to reduce amount of data requested from Jenkins
+* J2x insecure start (#449)
+* Fixes #446 and adds check for credential existance before deleting it
+* Adding SSL disabling option, authentication, correction of Java Heap setting and some very helpful comments
+* Moved some unit tests to systests
+* FIX: No longer remove JENKINS\_HOME folder when JENKINS\_URL is set
+* Added section about Jenkins versions, removed "not tested on Jenkins 2.0"
+* Fixed url for latest Jenkins version
+* Added systests for stable and latest Jenkins version
+* Added required plugins
+* Changed jenkins launcher to use pre-built home dir
+* Added note that library is not tested on Jenkins 2.0
+* Set Jenkins download url to use LTS releases
+* In systests.TestNodes.test\_get\_node\_labels make sure the node creation code matches the other tests and cleanup the created node when the test finishes. Calling jenkins.create\_node instead of jenkins.nodes.create\_node might be the cause of the Travis CI build break
+* Add function to node for querying the labels from the node's config.xml. The config.xml querying and caching was copied from the job's config handling code
+* Update setup.cfg to support universal wheels
+* Can't find job parameters if in 'property'
+* Update setup.py classifiers
+* [doc] pep8 cleanup of examples in using\_jenkinsapi.rst
+* Add a warnning message if fingerprints aren't enabled
+* Fixed EMPTY\_JOB config to match the one returned from Jenkins
+* Revert "Tidy up \_\_init\_\_ and comments"
+* Revert "Get rid of unused modules and unhelpful comments"
+* Revert "Add sudo: false which means we use the new Travis infrastructure"
+* Add sudo: false which means we use the new Travis infrastructure
+* Correct the logging format
+* Get rid of unused modules and unhelpful comments
+* Tidy up \_\_init\_\_ and comments
+
+0.2.29
+------
+
+* Version bump prior to release
+* Added better example for views and fixed bug
+* Removed UTF-8 as a method of decoding the content bytes
+* Decoding bytes with the ISO-8859-1 encoding
+* Added more information about library capabilities
+* Added get\_changeset\_items() method
+* Fix for issue #357
+* Added how\_to examples for nodes and credential creation
+* Added support for ssh credentials
+* Add a doc regarding ssl\_verify arg in the Jenkins class
+* Unified node creation and fixed tests
+* Added SSH node creation and tests
+* Added credentials and ssh node creation
+* Add ssl\_verify flag to the Jenkins class
+* Fix line spacing
+*  Add changes to get slave information
+* Add Build.get\_description()
+* FIX: fix bad indentation (2->4 spaces)
+* FIX: allow jenkinsapi to be used without installation  (without being registered by pkg\_resources module)
+* KrbRequester.get\_request\_dict missing \*\*kwargs
+* Update using\_jenkinsapi.rst
+* Adding a note about using an API token as password
+* Return full response object if requested on job.update\_config method. - https://github.com/salimfadhley/jenkinsapi/issues/369
+* Fix pylint violations
+* How to kick-off a paramterized build (eg build version, python version)
+* working tox configuration for testing/lint with multiple python versions
+* fixing lint
+* remove testcase which is no longer necessary
+* fix typos and lint
+* negotiating python 2 vs 3 differences
+* add tox to gitignore
+* catch ConnectionError as well as HTTPError while waiting for restart
+* fixed python3 compatability
+* pe8, flakes, system-test for safe\_restart
+* tests for install\_plugin and install\_plugins
+* pyflakes
+* adding jenkins.install\_plugin, jenkins.install\_plugins, and jenkins.safe\_restart
+* Manual PEP8 changes
+
+0.2.28
+------
+
+* Actually, post messages are valid as long as data is not None
+* As long as the posted message is not None or empty we consider it to be valid. Requests library may still theow an exception
+* Add comment about the additional requirment for six in this example
+* Version bump, remove useless assertion in requester and remove unhelpful dependency on six
+* handle python3 urllib
+* download artifacts: handle files with special characters
+
+0.2.27
+------
+
+* Run autopep8 on everything - gotta have standards
+* we dont use circle any more
+* make examples work with Python3, reduce some code-smell
+* add make venv utility script and version bump
+* changing logic to check passed params
+* Allowing using standalone file parameter with buildWithParameters when no other parameters are passed
+* Taking care of Workflow (official) plugin job in get\_params. Need to check "parameterDefinitions" under "actions" and "property"
+* Taking care of Workflow (official) plugin job which doesn't have "parameterDefinitions" under "actions", but rather under "property"
+* Quickfix for Pylint fail with Python 2.6
+* Fix for PEP8
+* Fix for #336
+
+0.2.26
+------
+
+* version bump
+* Set pylint version to ensure compatibility with python 2.6
+* Set pylint version to ensure compatibility with python 2.6
+* fix invoke(skip\_if\_running=True)
+* add View.get\_config() and tests covering View.get\_config() as well as View.update\_config()
+* add update\_config() to view
+* Fix a typo in a function name in queing
+* added decode to test to make it work in PY 3.x
+* Pylint fixes
+* Added use of tree api to node, job, queue and fixed tests
+* Added support for JENKINS\_URL env. variable
+* Replaced \_poll\_if\_needed with lightweight tree calls
+* Changed job and build modules to use tree api
+* Low level api change to support tree api
+* Linter fixes
+* Fixed kerberos request's interface
+* Fixing get\_revision with no scm
+* adding test to illustrate bug with get\_revision with no scm
+* Prepare chunks that are applicable to both Python 2 and 3
+* Fix coding style violations
+* Fixed Build get\_matrix\_runs() to return only children jobs belong to the parent build number, with unit test
+* Add unit tests of artifact strict validation
+* Linter fixes
+* Fixed kerberos request's interface
+* Fixing get\_revision with no scm
+* adding test to illustrate bug with get\_revision with no scm
+* To parameterize the level of fingerprint validation
+* Tiny fixes
+* More fixes to parameterized builds - still broken
+* Tidy up exceptions file
+* Fix redefinition of id
+* Lots of fixes
+* Cut out some more crap, but noticed that invocation of parameterized builds is broken
+* Fix some pep8 violations I had introduced
+* Fix many more bugs
+* Trying to fix more errors
+* Fix way more bugs
+* Pep8 fixes + remove bogus imports
+* fix a bunch of tests
+* reducing the number of errors from the refactor of invocation/queues
+* interim commit - refactor of queue & invocation
+* Proposed fix for #297
+
+0.2.25
+------
+
+* Version bump and update deps to the latest version. Also added a link to requires.io to the readme.rst file
+* ensure that tags are pushed at the end of every build
+
+0.2.24
+------
+
+* remove duplicated travis link
+* remove parts of failing tests
+* version bump
+* plugin info example
+* pep8 tidyup and example of plugin querying
+* better support for querying plugins
+* tidy up links section
+* mega tidy-up of the docs
+* add doc upload step to the release script
+* tidy up travis files
+
+0.2.23
+------
+
+* added additional versions of python to the travis configuration;
+* fix some pep8 violations
+* added tagging of releases
+* added a way of getting the api version from the command-line
+* add the \_\_version\_\_ feature to the package
+* version bump
+* added travis buttons to readme
+* proposed fix for #295 - crash during get\_params on maven jobs
+* minor version bump
+* add release script, fix broken landscape.io image in docs
+* revert accidental removel of unittest2 from the setup.py script
+* pre release tidy-ups and version bump
+* Fix for issue #291
+* Example of adding a shell build
+* make tests more robust
+* add get\_causes
+* add comment about depth control
+* add job.get\_build\_metadata
+* Fix for P3 compatibility
+* Disabled "too many branches" in pylint
+* Fix for issue #280
+* Added better test to job.\_add\_missing\_builds()
+* Revert "Bumped Python from 3.3 to 3.4"
+* Bumped Python from 3.3 to 3.4
+* Added section about Python versions
+* Added short delay to let job run for a bit
+* add logging url when non 200 OK response
+* Added small delay to let jenkins catchup
+* Fixed assertion renamed in P3
+* build.get\_console() now returns string in all python versions
+* Fixed md5 calculation
+* Fixed most of the unit tests to work on all python versions
+* Fixed assertion renamed in P3
+* build.get\_console() now returns string in all python versions
+* Fixed md5 calculation
+* Fixed most of the unit tests to work on all python versions
+* fixes job invoke when no build parameters exist for a particular job
+* Removed paragraph about Python 3 branch
+* Added re-try when removing job
+* Added small delay for test\_parametrized\_build
+* Added support for 'del' in Jenkins object: remove job
+* Added re-try when removing job
+* Added small delay for test\_parametrized\_build
+* Added support for 'del' in Jenkins object: remove job
+* Set unitest2 to be used only on python 2.6
+* Added unittest2 so travis can run tests with recent Python
+* Set to use unittest2 library instead of unittest
+* Fixed incorrect merge
+* Fix for issue #268 and unit tests for it
+* Add test to verify fetching of plugin details,
+* Formatting fixes
+* Small changes in jobs classes
+* Simplified get\_job\_url function
+* Fixed pylint violations
+* Adapt fingerprint to catch HTTPError from requests
+* minor fix to exception messages to improve readability
+* Add support to create Jenkins object without immediately polling jobs
+* Simplified get\_job\_url function
+* Fixed pylint violations
+* Add a few Jenkins API usage examples
+* Adapt fingerprint to catch HTTPError from requests
+* minor fix to exception messages to improve readability
+* Add support to create Jenkins object without immediately polling jobs
+* polling jenkins each time Jobs is initialized
+* Added conversions from bytes to strings
+* Changed Jenkins URL to download LTS version
+* add unit test for multiple top level folders
+* Changed Jenkins URL to download LTS version
+* resolve\_job\_folders skipping jobs fix
+* iteritems -> items Queue -> queue
+* basestring, unicode, str compatibility
+* exception.message -> str(exception)
+* urllib compatibility
+* Use print() (with 'from \_\_future\_\_ import print\_function')
+* Fix wrong translation of 'except' from python2 to pytho3
+* Tying to fix P3 incompatibility
+* Added build for Python 2.6
+* Added Python 3.3 to this branch build spec
+* Added note about experimental nature of this branch
+* move the stuff out of readme
+* added documentation about getting version info
+* Version bump
+* Added Aleksey to primary authors list
+* Addressing issue/221 - changing depth=1
+* making change more pythonic
+* removing debug message
+* Adding method to expose /computer/api/python
+* Move @lechat up the list since he's the most active maintainer
+* Remove inactive developers from the main PROJECT\_AUTHORS
+* Version bump
+* fixing pylint failure
+* job.get\_build\_triggerurl update
+* get\_build\_triggerurl logic fix
+* logging fix for invalid response
+* Fix tests
+* fix for #237
+* Add support for Job Folders (CloudBees Folders Plugin)
+* Fixed PyLint errors
+* update the create\_view example to reflect the latest views API
+* Add the method for retrieving the last stable build
+* Correct name of testcase
+* Remove sys.path changes added for debugging
+* fix for getting scm url and branch for hg repos
+* Only process non empty actions while getting job parameters
+* Fix pep8 violation
+* Make version a property
+* Fix pylint warnings
+* Update to show version usage
+* Add method to return Jenkins Version
+* Moved delete\_view\_by\_url back to jenkins object
+* fix for block until queued error on jenkins server with prefix / context path, removed urlparse.urljoin which stripped the prefix
+* Updated api module
+* Fix: error message was not giving job name
+* Changed eval() to ast.literal\_eval() for safety
+* add unit test for jobs without first build
+* Jobs without the first build can throw error
+* Removed unused import
+* Added another delay to let Jenkins catchup
+* Added delay to let Jenkins to catchup with invocation
+* Made invocation.get\_job\_number to poll job
+* Added build.get\_revision\_branch method (Git only)
+* Adding myself as a contributor
+* Randomize jenkins http port for systests to avoid collision with default 8080
+* Added systests for executor feature. Other fixes
+* Added ability to query slaves for executors
+* made the wait-period longer for this test
+* Some tidy-ups
+* Tidy up this test - still quite bad & useless
+* Add myself to contributors as requested
+* Fixup commit 2b14616c6a9577b4
+* Move nose from setup\_requires to test\_requires
+* add a new doc
+* Changed authors to the more correct 'contributors'
+* Added a reminder not to contact authors directly
+* added installation notes
+* version bump
+* Add some more comments
+* tidy up imports
+* Add warnings to functions with 0% coverage
+* Added a borderline useless test to matrix jobs
+* added tests for parameterized builds for issue [#178]
+* pep8
+* respect parameterized builds when checking build requests and add has\_queued\_build method
+* add get\_parameters to QueueItem and fix get\_queue\_items\_for\_job in Queue
+* get rid of unpleasent use of Super
+* disable an annoying pylint warning
+* more lint fixes
+* Add some missing doctext
+* many pep8 violations fixed
+* fix up some imports
+* still broken
+* version bump
+* fix up some tests
+* resolve conflicts
+* tidy ups
+* Change id() call to identifier()
+* Revert overreaching change
+* Remove passing now-deleted parameter (deleted because it was not used in method)
+* Rename Result.id() to Result.identifier (builtin id)
+* pylint fixes for jenkinsapi\_tests/
+* pylint fixes for jenkinsapi/
+* Fix None comparisons and arithmetic spacing
+* Fix pep8 errors in examples/
+* Fix pep8 errors in examples/
+* pep8 fixes in test and utils directories
+* Fix pep8 errors in setup.py
+* Patch tests and utils: exceptions to custom\_exceptions
+* Patch tests and utils: exceptions to custom\_exceptions
+* Disable I0011 pylint message
+* Rename exceptions to custom\_exceptions (because exceptions screws up pylint)
+* Disable 'Unexpected keyword arg' error
+* Unnecessary lambda?
+* Do not use variables that clash with builtins (id, range, type)
+* Best guess at using unused variable
+* Best guess at why a variable is undefined
+* Use longer variable name
+* Use longer variable name
+* Use good variable name
+* Use longer variable name
+* Fix use of for-else with no break
+* Fool with pylintrc
+* Split overlong line
+* Lookup in dict
+* Move docstring before code
+* Modify over-long lines
+* Renaming variable that masks one in outer scope
+* Initialize instance variable inside ctor
+* Fix dangerous default argument
+* Add docstring to class
+* Remove unneeded argument in internal method
+* Split long lines
+* Implement methods with dict-like primitives
+* Put dict to use
+* Fix pylint errors relating to collection implementation
+* Use dict.get to simplify test and iteration
+* Change class name jenkins\_invoke to JenkinsInvoke (camelcase)
+* Add module and class docstrings
+* Remove dead file
+* Remove unused imports
+* Fix pylint error relating to logging
+* Add module docstring
+* Use list comprehension; split long lines
+* Remove unneeded imports
+* Fix over-indentation
+* Add pylint config
+* Add pep8 and pylint to .travis.yml
+* Change import for pylint error
+* Reformat \_\_all\_\_
+* Fix really long lines
+* Fix indentation of block
+* Remove use of has\_key
+* Split lines joined by semicolon
+* Fix whitespace around operators
+* Add trailing newline in file
+* Fix whitespace issues
+* add support for FILE parameters
+* merge some recent fixes
+* Try to be consistent about what type is returned
+* Fetch full build list when incomplete
+* ensure virtualenv installed and WORKSPACE defined
+* Add Plugins#\_\_str\_\_
+* Raise NoBuildData when latestBuild etc. not even set
+* Temporarily disable a test
+* Add kerberos authentication requester using requests\_kerberos
+* Keep the same scheme (protocol) as was used in Jenkins constructor in all requests
+* Add kerberos authentication requester using requests\_kerberos
+* Keep the same scheme (protocol) as was used in Jenkins constructor in all requests
+* fix exceptions inheritance
+* Build.get\_downstream methods
+* add license to setup file
+* version bump
+* README work
+* changing test to check the fix
+* updating and fixing tests
+* fixing queue url format, the api/python part was duplicated
+* fixing get\_last\_build when the build is running and fixing is\_running method as well
+* updating with original repo
+* Pip 1.4+ compatibility with pytz
+* Add Build.get\_matrix\_runs()
+* Make test\_jenkins\_artifacts more forgiving
+* Version bump
+* Fixed last build number in invocation
+* Fixed problem with get\_build\_number (Issue #158)
+* Removed debug printout
+* Add kerberos authentication requester using requests\_kerberos
+* Keep the same scheme (protocol) as was used in Jenkins constructor in all requests
+* Allow no verification of server certificate when using https
+* Added ability to query for installed plugins
+* Version bump
+* This whole file is disabled for now
+* fix for queue delete issue
+* Fixed improper requester
+* Added Jobs() container (similar to Views())
+* More files to ignore
+* Chnged views() to views in tests and examples
+* Made views() a property, added safety in case view doesn't have subviews
+* Added nested-view plugin and systest for it
+* Version bump
+* Added another way of adding a view and example for it
+* Added job removal example
+* Moved addjob.xml to make examples working
+* Added example for creating nested view
+* Fix to get view.views() actually working
+* Fixed tests, reformatted View with PEP8, added more tests
+* Added ability to create nested views
+* Added view.views() method to get nested Views object
+* Added code to debug HTTP requests (commented)
+* Convert config to str if it is unicode
+* tweak to one unit test
+* version bump
+* Fix for issue #142 copy\_job return value changed from destination job to source job
+* build objects now have a get\_console function
+* Add an extra test to verify multiple invocation behavior
+* Version bump
+* handle missing build objects slightly better
+* moved the scm test out of systests into unittests
+* This test is disabled,it does not actually test all that much about the API, it would be better done as a unittest
+* support for binary artifacts
+* remove unused import
+* move the pinger job config into the config file
+* Make nosetests verbose
+* an attempt to force the launcher to wait until jenkins is actually launched
+* change cannot parse error
+* get rid of the ill-coinceived retry function
+* delete some krb stuff
+* Add a header
+* Added a script for all the jenkins activities
+* Add a word from our sponsors
+* version bump
+* apply the requested patch to solve issue #20
+* Use requests instead of urllib.urlretrieve for plugins
+* Begin test cases for testing jenkins API calls related to the SCM
+* jenkins\_launcher can now install plugins
+* Fix build.get\_revision() for GIT repositories
+* Version bump
+* some small fixes
+* some small fixes
+* inital somewhat working demo of invocations
+* Added a note to ask people not to email the developers for support
+* Bumped Alexey up the list!
+* Version bump
+* interim commit - pausing for the night
+* refactor continues on invocation;
+* more invocation stuff, temporary commit as I move to a new computer
+* add how to support us section
+* pep8 format
+* Moved the empty job config into the config
+* stubbing out a new invocation test
+* small re-organization, now we have a config file for all the jobs used in systests
+* skeleton class of the Invocation object
+* pep8 format
+* Initial commit of the Invocation object
+* Remove a redundant import
+* Version bump
+* some more test tidy-ups
+* better support for starting & stopping jobs
+* Add coverage to travis routine
+* Version bump
+* The launcher can now provide configuration files
+* get rid of a pointless function
+* new config file - required to launch newer versions of jenkins;
+* remove a print statement
+* Version bump
+* more docs
+* some docs
+* tidy up warning
+* add coverage
+* moved the test for war existance into python
+* Lock Jenkins to an older version for now
+* Added known bugs section
+* Fixed typo
+* Removed print statement from get\_jobs\_list
+* Added test for utils.Requester
+* remove a duplication
+* fixed a typo in the unittst
+* yet another refactor of nodes, this time with better tests
+* remove unused import
+* remove unused import
+* remove unused import
+* fix some typos
+* we dont need no steenking accessor functions
+* small tidy-ups to tests
+* delete a bunch of stuff we do not actually need
+* corrected a typo
+* changed the text
+* Added the link to the issue tracker
+* Added some test result data
+* added the support link
+* more examples sorted
+* added a bunch of stuff in a new location
+* reshuffled a bunch of stuff
+* add a bunch more stuff
+* corrected one of the api-methods
+* Added some more ignores
+* queues have been almost entirely refactored, still need docs & examples
+* initial refactoring of queues
+* make sure that coverage logs are not tracked
+* tidy up imports
+* add nosetest & other steps to the ANT build
+* fix the test name
+* version bump
+* Coverage is now on by default
+* add nosetests settings to the cfg file
+* whitespace change
+* more invocation stuff, temporary commit as I move to a new computer
+* Fixed bug in View.add\_view, added unittests for View
+* add how to support us section
+* pep8 format
+* Moved the empty job config into the config
+* stubbing out a new invocation test
+* small re-organization, now we have a config file for all the jobs used in systests
+* skeleton class of the Invocation object
+* pep8 format
+* Initial commit of the Invocation object
+* Remove a redundant import
+* We no longer return 0 for missing builds, now we use an exception
+* merge some stuff
+* Version bump
+* some more test tidy-ups
+* better support for starting & stopping jobs
+* Fixed update\_config not passing config to Jenkins
+* Added tests for Job, reformatted Job code
+* Update jenkins.py
+* Add coverage to travis routine
+* Version bump
+* The launcher can now provide configuration files
+* get rid of a pointless function
+* new config file - required to launch newer versions of jenkins;
+* remove a print statement
+* Version bump
+* more docs
+* some docs
+* tidy up warning
+* add coverage
+* moved the test for war existance into python
+* Lock Jenkins to an older version for now
+* Added known bugs section
+* Fixed typo
+* Removed print statement from get\_jobs\_list
+* Added test for utils.Requester
+* remove a duplication
+* fixed a typo in the unittst
+* yet another refactor of nodes, this time with better tests
+* remove unused import
+* remove unused import
+* remove unused import
+* fix some typos
+* we dont need no steenking accessor functions
+* small tidy-ups to tests
+* delete a bunch of stuff we do not actually need
+* corrected a typo
+* changed the text
+* Added the link to the issue tracker
+* Added some test result data
+* added the support link
+* more examples sorted
+* added a bunch of stuff in a new location
+* reshuffled a bunch of stuff
+* add a bunch more stuff
+* corrected one of the api-methods
+* Added some more ignores
+* queues have been almost entirely refactored, still need docs & examples
+* initial refactoring of queues
+* make sure that coverage logs are not tracked
+* tidy up imports
+* add nosetest & other steps to the ANT build
+* fix the test name
+* version bump
+* Coverage is now on by default
+* add nosetests settings to the cfg file
+* whitespace change
+* Fix typo
+* Significant refactor of views - still need to write documentation & examples
+* Get the views stuff out of the main Jenkins unittest. It will be added to it's own test-suite
+* make the post logger run on the same port as default jenkins
+* make it possible to create views again
+* This is the actual correct way to generate a new view. Ignore my previous effort
+* Add a low-level example for creating views
+* Tidy up the comment
+* Remove redundant import
+* Add a comment to this example
+* get rid of the kerberos stuff - it's commented for now until we can come up with a more workable implementation
+* pep8 format & remove redundant imports
+* examples/create\_a\_job.py
+* small reformatting, cosmetic only
+* coverage is now a test dep
+* initial coverage + fixes for creating nodes
+* remove redundant imports from jenkins launcher
+* Get rid of the global - it's not needed any more
+* jenkins.create\_job no longer throws exception
+* many small fixes
+* clear before testing rather than after
+* updated readme & setup files
+* build fixes
+* use dry run to install test-dependancies automagically
+* correct the name of the downloady thing
+* get rid of ipdb
+* re enable systests in travis
+* refactor of jenkin launcher
+* a more robust way to launch jenkins - intended to be used in the syslaunchers when running on remote CI
+* Added Aleksey Maksimov to authors
+* temporarily disabled systests in travis until I can figure out why Jenkins does not start
+* Remove python 3.3. support
+* re-add python 3.3 support
+* split out travis commands
+* fix a typo
+* ci should prefer nosetests
+* new home for this file
+* this is in the wrong directory
+* 2nd rename
+* rename the travis config
+* setup.py
+* added support for travis-ci
+* fix some stuff I broke
+* run all the tests, not just unittests
+* build timestamps are now timezone aware. Added the pytz class as a dependancy
+* get the parameterized build unit-test working again
+* fixes for parameterized builds and enabling/disabling
+* Fixed get\_server\_baseurl, simplified create\_job
+* Changed get\_timestamp to return UTC time
+* a lower-level example of how parameterized builds work in Jenkins
+* move the post-logger out of tests, it's not really a test
+* some refactoring of builds
+* new config for circle CI support
+* Adding API Method - Build Job
+* More small fixes to jobs, I've begun work on a test for artifacts however I know this class is very wrong atm
+* fixes for getting job configs
+* fixes to job starting
+* new stuff that I forgot to commit yesterday
+* Added tests for create\_view and delete\_view
+* Fixed broken create\_view and delete\_view
+* Fixed timestamp
+* Fixed bug: view.add\_job fails when job parameter contains Job object
+* new nodes class + basic tests
+* Interim commit - I'm part way through refactoring all the networking stuff. Posts are not yet working
+* tweak the readme file
+* Add an example + updated installation syntax to the readme file
+* Add a lot of helpful and useful stuff to the sublime config
+* Remove the id() method from most of the jenkinsapi classes
+* more doc tweaks
+* Added the sublime project file
+* Many fixes to document building - we now use the handy pypi doc upload script
+* New datetime behavior for builds as requested
+* Some small code tidy-ups, a version bump + correct the datetime behavior for build.get\_timestamp()
+* Reworked add\_job Added extra parameter to pass Job object. Uses Job object internally. Changed return values Added documentation
+* Cleaned create\_view, added delete\_view
+* Added system tests
+* Added Jenkins.\_\_contains\_\_ method
+* Changed View.add\_job() to actually add job to the view, rather than replace all jobs in the view by that job
+* Added get\_description function for jobs
+* update documentation link
+* Add convenient method for obtaing nested view
+* Add support for nested views
+* Cause can be given to build with or without params
+* Version bump
+* Fix typo in variable name
+* Use preferred URL scheme for jobs
+* Add get\_params and get\_params\_list to Job
+* Add missing import
+* [FIX] ISSUE 70 - Jenkins need POST params and not GET params
+* removing log trace, too verbose
+* Queue class to represent the Jenkins queue: lists the items and deletes them
+* adding support for stopping a build if it's running
+* adding support to delete a job from the queue
+* Make kerberos optional. Version bump
+* mutable objects mustn't be initialized in method params
+* doc comment fixed
+* adding STATUS\_SUCCESS constant instead of hardcoded string
+* Fixing crash on none value
+* Another version bump
+* Version bump
+* add comments
+* fix node url
+* set node online/offline
+* fix create\_node part
+* remove redundat dependencies
+* Refactored SCM (Source Code Management) functionality
+* Fix: UnboundLocalError: local variable 'fn\_name' referenced before assignment
+* kerberos dependency added to setup.py
+* getting hg revision from mercurialNodeName because there might be builds with empty changesets list
+* Added kerberos authentication
+* Added rename\_job function
+* Add the ability to create a jenkins job
+* Fix typo when passing config to BeautifulSoup()
+* Add the SKIPPED result status to constants
+* Fix for https://github.com/salimfadhley/jenkinsapi/issues/53
+* Fix for https://github.com/salimfadhley/jenkinsapi/issues/54
+* merging jollychang @ 070a45e0cd1a5c41d7db49326a2920e44eb73715
+* Job API may not include in progress build in the 'builds' array.  Use URL from 'lastBuild' instead
+* support for getting and setting SCM branch/source job configuration
+* add job enable/disable
+* for none
+* get\_vsc\_url
+* Fix regex search and add support for retrieving artifacts with the same name in different directories
+* Add support for authentication over https
+* Update README
+* Makes delete\_job work with builtin auth by using the proper parameters to get the job
+* Add get\_build convenience function
+* Typo
+* Make final return statement be useful
+* Revert "2to3 conversion, untested."
+* adding myself to the list of contributors
+* 2to3 conversion, untested
+* Fix python grammar for 3 compatibility
+* Add license doc
+* Add MIT license
+* a build should have resultset even though having a status failure
+* improving performance in the get\_job() method
+* adding support to get downstream builds and jobs
+* get rev by build
+* fix create my view
+* typo
+* get\_buildnumber\_for\_revision() to support git/hg
+* Version bump
+* git\_revision() supports git and hg
+* add original init arguments
+* fix: copy\_job() missing arguments
+* fix typo
+* Doc version bump
+* Version bump
+* join url by urlparse.urljoin(
+* post should be get\_opener() first
+* clean codes
+* form login
+* Many changes to aid doc-building & release process
+* fixing some indentation issues
+* adding support to get upstream jobs and builds (direct upstream jobs or master jobs)
+* fixed error in Job.is\_running in case when there is no any builds of this job
+* support for create my view
+* fix for include jobs
+* move add job to view from jenkins.py to view.py for nest view
+* ignore \*.Ds\_Store
+* add get\_jobs\_list,has\_job, add\_job\_to\_view
+* add docstring and comment for viewExistsCheck message
+* add create view
+* add myself to the list of contributors :)
+* add delete\_view\_by\_url
+* add get\_view\_by\_url for myview or Nested View,what ever
+* after delete job renew obj
+* copy job return job obj
+* copy/delete job
+* add raise
+* add try expect
+* change a var
+* add update\_config and post\_data
+* build.invoke with block=True: don't assert build succes, but build completion
+* fix import issue in build.block\_until\_complete()
+* small issue with time import
+* FIX: TypeError: 'NoneType' object is unsubscriptable when \_data[buildtype] == None
+* Correct IOError on install
+* Version bump
+* Fix pep8 and open file description
+* Fix Credits and Project Authors
+* Added Credits
+* Fix reStructuredText syntax
+* Fix reStructuredText syntax
+* Added a required dependency
+* Version bump
+* Lars Nordin's correction intended to cope with node-names which contain characters requiring HTTP escaping. Thanks for the fix Lars!
+* Update jenkinsapi/build.py
+* Version bump. Ramon has kindly fixed my sdist import error
+* Fixed setup.py
+* Added timestamp method to build
+* Add build dir to .gitignore
+* Yet more corrections required for the 0.1.1 release, including some typos in the doc-building ANT script and the main setup script. Also added an ANT script which automates much of the release process
+* Some tweaks required for 1.0.1 release
+* more whitespace fixup
+* fix validate\_for\_build parameters
+* Added the ability to get at the config.xml from a job
+* Install fails without utils package which is required by JenkinsBase
+* Moved hiturl to base class and implemented reload
+* Cleaned up whitespace in examples
+* Removing eclipse settings
+* Adding .settings to gitignore
+* Fixing parameterized job invocation
+* Trigger parameterized builds with token as well
+* Fixing parameterized job invocation
+* fix validate\_for\_build parameters
+* return filepath
+* More tweaks to the readme
+* Add some simple searching examples
+* Remove repeating text from readme
+* Doc building to zips now working
+* Added some doctext
+* Added an incomplete example (was from my old version so needs to be updated)
+* Added some more docs
+* More doc tweaks
+* Correct some indentation errors
+* Add some items to the main TOC
+* More doc related tweaks
+* More tweaks, finally getting the hang of Sphinx
+* Switching back to Sphinx
+* Interim commit - a dummy file in the examples folder to act as a placeholder. Doc generation tweaks
+* Small tweaks to docs
+* Fixed up some zipping
+* Interim commit - adding support for zipping docs
+* Interim commit
+* Interim commit of epydoc
+* Delete no longer needed files
+* More tweaks
+* Some doc work
+* Tidy up of readme
+* Ensure build & dist files are ignored
+* Tidy ups of the setup & readme files
+* Salim is back in the setup.py by request
+* Fixup setup.py
+
+0.1
+---
+
+* Renamed to jenkinsapi
+* Added support for user/pass auth to invoker
+* Cleanup of unused code
+* Fixing stupid bugs
+* Fixing stupid bugs
+* First stab at refactoring artifact
+* Few bugs left due to old refs to hudson
+* Fixed dict creation by using a defaultdict
+* Added it to the wrong class :(
+* Missing revmap attribute added
+* Fixing json import, we have simplejson installed in python-2.5
+* Fixed indentation error
+* Adapted ruslans changes to allow revision->buildnr caching
+* Cleanup
+* Added authentification and node classes
+* revision methods added to job and build classes
+* First stab at node class
+* Test
+* Added \*.pyc and egg-info to ignore list
+* Changed imports and classnames
+* Fixing up setup.py refs
+* Simplyfied dir setup
+* First commit
+* PEP-8 compliance run

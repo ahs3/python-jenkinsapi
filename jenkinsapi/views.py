@@ -5,6 +5,7 @@ Module for jenkinsapi Views
 import logging
 import json
 from jenkinsapi.view import View
+from jenkinsapi.custom_exceptions import JenkinsAPIException
 
 log = logging.getLogger(__name__)
 
@@ -16,6 +17,8 @@ class Views(object):
     """
     LIST_VIEW = 'hudson.model.ListView'
     NESTED_VIEW = 'hudson.plugins.nested_view.NestedView'
+    CATEGORIZED_VIEW = \
+        'org.jenkinsci.plugins.categorizedview.CategorizedJobsView'
     MY_VIEW = 'hudson.model.MyView'
     DASHBOARD_VIEW = 'hudson.plugins.view.dashboard.Dashboard'
     PIPELINE_VIEW = ('au.com.centrumsystems.hudson.'
@@ -23,6 +26,11 @@ class Views(object):
 
     def __init__(self, jenkins):
         self.jenkins = jenkins
+        self._data = None
+
+    def poll(self, tree=None):
+        self._data = self.jenkins.poll(tree='views[name,url]'
+                                       if tree is None else tree)
 
     def __len__(self):
         return len(self.keys())
@@ -33,7 +41,7 @@ class Views(object):
 
         if view_name in self:
             self[view_name].delete()
-            self.jenkins.poll()
+            self.poll()
 
     def __setitem__(self, view_name, job_names_list):
         new_view = self.create(view_name)
@@ -46,17 +54,19 @@ class Views(object):
                 raise TypeError('Job %s does not exist in Jenkins' % job_name)
 
     def __getitem__(self, view_name):
-        self.jenkins.poll()
-        for row in self.jenkins._data.get('views', []):
+        self.poll()
+        for row in self._data.get('views', []):
             if row['name'] == view_name:
                 return View(row['url'], row['name'], self.jenkins)
+
+        raise KeyError('View %s not found' % view_name)
 
     def iteritems(self):
         """
         Get the names & objects for all views
         """
-        self.jenkins.poll()
-        for row in self.jenkins._data.get('views', []):
+        self.poll()
+        for row in self._data.get('views', []):
             name = row['name']
             url = row['url']
 
@@ -72,8 +82,8 @@ class Views(object):
         """
         Get the names of all available views
         """
-        self.jenkins.poll()
-        for row in self.jenkins._data.get('views', []):
+        self.poll()
+        for row in self._data.get('views', []):
             yield row['name']
 
     def keys(self):
@@ -82,31 +92,46 @@ class Views(object):
         """
         return list(self.iterkeys())
 
-    def create(self, view_name, view_type=LIST_VIEW):
+    def create(self, view_name, view_type=LIST_VIEW, config=None):
         """
         Create a view
         :param view_name: name of new view, str
-        :param person: Person name (to create personal view), str
+        :param view_type: type of the view, one of the constants in Views, str
+        :param config: XML configuration of the new view
         :return: new View obj or None if view was not created
         """
-        log.info(msg='Creating "%s" view "%s"' % (view_type, view_name))
+        log.info('Creating "%s" view "%s"', view_type, view_name)
 
         if view_name in self:
-            log.warn(msg='View "%s" already exists' % view_name)
+            log.warning('View "%s" already exists', view_name)
             return self[view_name]
 
         url = '%s/createView' % self.jenkins.baseurl
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        data = {
-            "name": view_name,
-            "mode": view_type,
-            "Submit": "OK",
-            "json": json.dumps({"name": view_name, "mode": view_type})
-        }
 
-        self.jenkins.requester.post_and_confirm_status(
-            url,
-            data=data,
-            headers=headers)
-        self.jenkins.poll()
+        if view_type == self.CATEGORIZED_VIEW:
+            if not config:
+                raise JenkinsAPIException(
+                    'Job XML config cannot be empty for CATEGORIZED_VIEW')
+
+            params = {'name': view_name}
+
+            self.jenkins.requester.post_xml_and_confirm_status(
+                url,
+                data=config,
+                params=params)
+        else:
+            headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+            data = {
+                "name": view_name,
+                "mode": view_type,
+                "Submit": "OK",
+                "json": json.dumps({"name": view_name, "mode": view_type})
+            }
+
+            self.jenkins.requester.post_and_confirm_status(
+                url,
+                data=data,
+                headers=headers)
+
+        self.poll()
         return self[view_name]

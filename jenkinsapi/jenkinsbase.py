@@ -5,8 +5,11 @@ Module for JenkinsBase class
 import ast
 import pprint
 import logging
+from six.moves.urllib.parse import quote as urlquote
 from jenkinsapi import config
 from jenkinsapi.custom_exceptions import JenkinsAPIException
+
+logger = logging.getLogger(__name__)
 
 
 class JenkinsBase(object):
@@ -45,9 +48,7 @@ class JenkinsBase(object):
         """
         if not isinstance(other, self.__class__):
             return False
-        if not other.baseurl == self.baseurl:
-            return False
-        return True
+        return other.baseurl == self.baseurl
 
     @classmethod
     def strip_trailing_slash(cls, url):
@@ -61,8 +62,8 @@ class JenkinsBase(object):
             data['jobs'] = self.resolve_job_folders(data['jobs'])
         if not tree:
             self._data = data
-        else:
-            return data
+
+        return data
 
     def _poll(self, tree=None):
         url = self.python_api_url(self.baseurl)
@@ -78,13 +79,13 @@ class JenkinsBase(object):
 
         response = requester.get_url(url, params)
         if response.status_code != 200:
-            logging.error('Failed request at %s with params: %s %s',
-                          url, params, tree if tree else '')
+            logger.error('Failed request at %s with params: %s %s',
+                         url, params, tree if tree else '')
             response.raise_for_status()
         try:
             return ast.literal_eval(response.text)
         except Exception:
-            logging.exception('Inappropriate content found at %s', url)
+            logger.exception('Inappropriate content found at %s', url)
             raise JenkinsAPIException('Cannot parse %s' % response.content)
 
     def pprint(self):
@@ -97,18 +98,22 @@ class JenkinsBase(object):
         for job in list(jobs):
             if 'color' not in job.keys():
                 jobs.remove(job)
-                jobs += self.process_job_folder(job)
+                jobs += self.process_job_folder(job, self.baseurl)
 
         return jobs
 
-    def process_job_folder(self, folder):
-        data = self.get_data(self.python_api_url(folder['url']))
+    def process_job_folder(self, folder, folder_path):
+        logger.debug('Processing folder %s in %s', folder['name'], folder_path)
+        folder_path += '/job/%s' % urlquote(folder['name'])
+        data = self.get_data(self.python_api_url(folder_path),
+                             tree='jobs[name,color]')
         result = []
 
         for job in data.get('jobs', []):
             if 'color' not in job.keys():
-                result += self.process_job_folder(job)
+                result += self.process_job_folder(job, folder_path)
             else:
+                job['url'] = '%s/job/%s' % (folder_path, urlquote(job['name']))
                 result.append(job)
 
         return result

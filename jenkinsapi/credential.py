@@ -2,6 +2,7 @@
 Module for jenkinsapi Credential class
 """
 import logging
+import xml.etree.cElementTree as ET
 
 log = logging.getLogger(__name__)
 
@@ -20,7 +21,8 @@ class Credential(object):
     Each class expects specific credential dict, see below.
     """
     # pylint: disable=unused-argument
-    def __init__(self, cred_dict):
+
+    def __init__(self, cred_dict, jenkins_class=''):
         """
         Create credential
 
@@ -34,12 +36,30 @@ class Credential(object):
         self.description = cred_dict['description']
         self.fullname = cred_dict.get('fullName', '')
         self.displayname = cred_dict.get('displayName', '')
+        self.jenkins_class = jenkins_class
 
     def __str__(self):
         return self.description
 
     def get_attributes(self):
         pass
+
+    def get_attributes_xml(self):
+        pass
+
+    def _get_attributes_xml(self, data):
+        root = ET.Element(self.jenkins_class)
+        for key in data:
+            value = data[key]
+            if isinstance(value, dict):
+                node = ET.SubElement(root, key)
+                if 'stapler-class' in value:
+                    node.attrib['class'] = value['stapler-class']
+                for sub_key in value:
+                    ET.SubElement(node, sub_key).text = value[sub_key]
+            else:
+                ET.SubElement(root, key).text = data[key]
+        return ET.tostring(root)
 
 
 class UsernamePasswordCredential(Credential):
@@ -60,8 +80,10 @@ class UsernamePasswordCredential(Credential):
     When creating credential via jenkinsapi automatic fields not need to be in
     dict
     """
+
     def __init__(self, cred_dict):
-        super(UsernamePasswordCredential, self).__init__(cred_dict)
+        jenkins_class = 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl'
+        super(UsernamePasswordCredential, self).__init__(cred_dict, jenkins_class)
         if 'typeName' in cred_dict:
             username = cred_dict['displayName'].split('/')[0]
         else:
@@ -74,18 +96,14 @@ class UsernamePasswordCredential(Credential):
         """
         Used by Credentials object to create credential in Jenkins
         """
-        c_class = (
-            'com.cloudbees.plugins.credentials.impl.'
-            'UsernamePasswordCredentialsImpl'
-        )
         c_id = '' if self.credential_id is None else self.credential_id
         return {
-            'stapler-class': c_class,
+            'stapler-class': self.jenkins_class,
             'Submit': 'OK',
             'json': {
                 '': '1',
                 'credentials': {
-                    'stapler-class': c_class,
+                    'stapler-class': self.jenkins_class,
                     'id': c_id,
                     'username': self.username,
                     'password': self.password,
@@ -93,6 +111,75 @@ class UsernamePasswordCredential(Credential):
                 }
             }
         }
+
+    def get_attributes_xml(self):
+        """
+        Used by Credentials object to update a credential in Jenkins
+        """
+        c_id = '' if self.credential_id is None else self.credential_id
+        data = {
+            'id': c_id,
+            'username': self.username,
+            'password': self.password,
+            'description': self.description
+        }
+        return super(UsernamePasswordCredential, self)._get_attributes_xml(data)
+
+
+class SecretTextCredential(Credential):
+    """
+    Secret text credential
+
+    Constructor expects following dict:
+        {
+            'credential_id': str,   Automatically set by jenkinsapi
+            'displayName': str,     Automatically set by Jenkins
+            'fullName': str,        Automatically set by Jenkins
+            'typeName': str,        Automatically set by Jenkins
+            'description': str,
+            'secret': str,
+        }
+
+    When creating credential via jenkinsapi automatic fields not need to be in
+    dict
+    """
+
+    def __init__(self, cred_dict):
+        jenkins_class = 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl'
+        super(SecretTextCredential, self).__init__(cred_dict, jenkins_class)
+        self.secret = cred_dict.get('secret', None)
+
+    def get_attributes(self):
+        """
+        Used by Credentials object to create credential in Jenkins
+        """
+        c_id = '' if self.credential_id is None else self.credential_id
+        return {
+            'stapler-class': self.jenkins_class,
+            'Submit': 'OK',
+            'json': {
+                '': '1',
+                'credentials': {
+                    'stapler-class': self.jenkins_class,
+                    '$class': self.jenkins_class,
+                    'id': c_id,
+                    'secret': self.secret,
+                    'description': self.description
+                }
+            }
+        }
+
+    def get_attributes_xml(self):
+        """
+        Used by Credentials object to update a credential in Jenkins
+        """
+        c_id = '' if self.credential_id is None else self.credential_id
+        data = {
+            'id': c_id,
+            'secret': self.secret,
+            'description': self.description
+        }
+        return super(SecretTextCredential, self)._get_attributes_xml(data)
 
 
 class SSHKeyCredential(Credential):
@@ -114,14 +201,20 @@ class SSHKeyCredential(Credential):
     private_key value is parsed to find type of credential to create:
 
     private_key starts with -       the value is private key itself
+
+    These credential variations are no longer supported by SSH Credentials
+    plugin. jenkinsapi will raise ValueError if they are used:
+
     private_key starts with /       the value is a path to key
     private_key starts with ~       the value is a key from ~/.ssh
 
     When creating credential via jenkinsapi automatic fields not need to be in
     dict
     """
+
     def __init__(self, cred_dict):
-        super(SSHKeyCredential, self).__init__(cred_dict)
+        jenkins_class = 'com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey'
+        super(SSHKeyCredential, self).__init__(cred_dict, jenkins_class)
         if 'typeName' in cred_dict:
             username = cred_dict['displayName'].split(' ')[0]
         else:
@@ -136,30 +229,17 @@ class SSHKeyCredential(Credential):
         elif cred_dict['private_key'].startswith('-'):
             self.key_type = 0
             self.key_value = cred_dict['private_key']
-        elif cred_dict['private_key'].startswith('/'):
-            self.key_type = 1
-            self.key_value = cred_dict['private_key']
-        elif cred_dict['private_key'].startswith('~'):
-            self.key_type = 2
-            self.key_value = cred_dict['private_key']
         else:
             raise ValueError('Invalid private_key value')
 
-    def get_attributes(self):
-        """
-        Used by Credentials object to create credential in Jenkins
-        """
-        base_class = (
-            'com.cloudbees.jenkins.plugins.sshcredentials.'
-            'impl.BasicSSHUserPrivateKey'
-        )
-
+    @property
+    def attrs(self):
         if self.key_type == 0:
-            c_class = base_class + '$DirectEntryPrivateKeySource'
+            c_class = self.jenkins_class + '$DirectEntryPrivateKeySource'
         elif self.key_type == 1:
-            c_class = base_class + '$FileOnMasterPrivateKeySource'
+            c_class = self.jenkins_class + '$FileOnMasterPrivateKeySource'
         elif self.key_type == 2:
-            c_class = base_class + '$UsersPrivateKeySource'
+            c_class = self.jenkins_class + '$UsersPrivateKeySource'
         else:
             c_class = None
 
@@ -168,10 +248,21 @@ class SSHKeyCredential(Credential):
             'privateKey': self.key_value,
             'stapler-class': c_class
         }
+        # We need one more attr when using the key file on master.
+        if self.key_type == 1:
+            attrs['privateKeyFile'] = self.key_value
+
+        return attrs
+
+    def get_attributes(self):
+        """
+        Used by Credentials object to create credential in Jenkins
+        """
+
         c_id = '' if self.credential_id is None else self.credential_id
 
         return {
-            'stapler-class': c_class,
+            'stapler-class': self.attrs['stapler-class'],
             'Submit': 'OK',
             'json': {
                 '': '1',
@@ -180,10 +271,93 @@ class SSHKeyCredential(Credential):
                     'id': c_id,
                     'username': self.username,
                     'description': self.description,
-                    'privateKeySource': attrs,
+                    'privateKeySource': self.attrs,
                     'passphrase': self.passphrase,
-                    'stapler-class': base_class,
-                    '$class': base_class
+                    'stapler-class': self.jenkins_class,
+                    '$class': self.jenkins_class
                 }
             }
         }
+
+    def get_attributes_xml(self):
+        """
+        Used by Credentials object to update a credential in Jenkins
+        """
+        c_id = '' if self.credential_id is None else self.credential_id
+        data = {
+            'id': c_id,
+            'username': self.username,
+            'description': self.description,
+            'privateKeySource': self.attrs,
+            'passphrase': self.passphrase,
+        }
+        return super(SSHKeyCredential, self)._get_attributes_xml(data)
+
+
+class AmazonWebServicesCredentials(Credential):
+    """
+    AWS credential using the CloudBees AWS Credentials Plugin
+    See https://wiki.jenkins.io/display/JENKINS/CloudBees+AWS+Credentials+Plugin
+
+    Constructor expects following dict:
+        {
+            'credential_id': str,   Automatically set by jenkinsapi
+            'displayName': str,     Automatically set by Jenkins
+            'fullName': str,        Automatically set by Jenkins
+            'description': str,
+            'accessKey': str,
+            'secretKey': str,
+            'iamRoleArn': str,
+            'iamMfaSerialNumber': str
+        }
+
+    When creating credential via jenkinsapi automatic fields not need to be in
+    dict
+    """
+
+    def __init__(self, cred_dict):
+        jenkins_class = 'com.cloudbees.jenkins.plugins.awscredentials.AWSCredentialsImpl'
+        super(AmazonWebServicesCredentials, self).__init__(cred_dict, jenkins_class)
+
+        self.access_key = cred_dict['accessKey']
+        self.secret_key = cred_dict['secretKey']
+        self.iam_role_arn = cred_dict.get('iamRoleArn', '')
+        self.iam_mfa_serial_number = cred_dict.get('iamMfaSerialNumber', '')
+
+    def get_attributes(self):
+        """
+        Used by Credentials object to create credential in Jenkins
+        """
+        c_id = '' if self.credential_id is None else self.credential_id
+        return {
+            'stapler-class': self.jenkins_class,
+            'Submit': 'OK',
+            'json': {
+                '': '1',
+                'credentials': {
+                    'stapler-class': self.jenkins_class,
+                    '$class': self.jenkins_class,
+                    'id': c_id,
+                    'accessKey': self.access_key,
+                    'secretKey': self.secret_key,
+                    'iamRoleArn': self.iam_role_arn,
+                    'iamMfaSerialNumber': self.iam_mfa_serial_number,
+                    'description': self.description
+                }
+            }
+        }
+
+    def get_attributes_xml(self):
+        """
+        Used by Credentials object to update a credential in Jenkins
+        """
+        c_id = '' if self.credential_id is None else self.credential_id
+        data = {
+            'id': c_id,
+            'accessKey': self.access_key,
+            'secretKey': self.secret_key,
+            'iamRoleArn': self.iam_role_arn,
+            'iamMfaSerialNumber': self.iam_mfa_serial_number,
+            'description': self.description
+        }
+        return super(AmazonWebServicesCredentials, self)._get_attributes_xml(data)
