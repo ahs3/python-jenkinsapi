@@ -9,7 +9,7 @@ Vcs-Git: https://github.com/ahs3/python-jenkinsapi
 
 Package: python3-jenkinsapi
 Architecture: all
-Depends: python3-lxml, python3-bs4, python3-pkg-resources,
+Depends: python3-lxml, python3-bs4, python3-pkg-resources, python3-pytest,
  ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
 Description: bindings for Python usage of the Jenkins remote API
