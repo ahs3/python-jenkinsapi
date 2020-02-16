@@ -3,7 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Al Stone <ahs3@debian.org>
 Build-Depends: debhelper (>= 8.0.0), python-all-dev, python-lxml, python-setuptools
-Standards-Version: 3.9.8
+Standards-Version: 4.5.0
 Homepage: http://pypi.python.org/pypi/jenkinsapi
 Vcs-Git: https://github.com/ahs3/python-jenkinsapi
 
