@@ -9,11 +9,12 @@ Build objects can be associated with Results and Artifacts.g
 """
 
 import time
-import pytz
 import logging
 import warnings
 import datetime
+
 from time import sleep
+import pytz
 from jenkinsapi import config
 from jenkinsapi.artifact import Artifact
 from jenkinsapi.result_set import ResultSet
@@ -22,12 +23,9 @@ from jenkinsapi.constants import STATUS_SUCCESS
 from jenkinsapi.custom_exceptions import NoResults
 from jenkinsapi.custom_exceptions import JenkinsAPIException
 
+from six.moves.urllib.parse import quote
+from requests import HTTPError
 
-try:
-    from urllib import quote
-except ImportError:
-    # Python3
-    from urllib.parse import quote
 
 log = logging.getLogger(__name__)
 
@@ -84,12 +82,34 @@ class Build(JenkinsBase):
         return self._data["builtOn"]
 
     def get_revision(self):
-        vcs = self._data['changeSet']['kind'] or 'git'
-        return getattr(self, '_get_%s_rev' % vcs, lambda: None)()
+        return getattr(self, '_get_%s_rev' % self._get_vcs(), lambda: None)()
 
     def get_revision_branch(self):
-        vcs = self._data['changeSet']['kind'] or 'git'
-        return getattr(self, '_get_%s_rev_branch' % vcs, lambda: None)()
+        return getattr(self, '_get_%s_rev_branch' % self._get_vcs(), lambda: None)()
+
+    def get_repo_url(self):
+        return getattr(self, '_get_%s_repo_url' % self._get_vcs(), lambda: None)()
+
+    def get_params(self):
+        """
+        Return a dictionary of params names and their values or None
+        if no parameters present
+        """
+        # This is what a parameter action looks like:
+        # {'_class': 'hudson.model.ParametersAction', 'parameters': [
+        #     {'_class': 'hudson.model.StringParameterValue',
+        #      'value': '12',
+        #      'name': 'FOO_BAR_BAZ'}]}
+        actions = self._data.get('actions')
+        if actions:
+            parameters = {}
+            for elem in actions:
+                if elem.get('_class') == 'hudson.model.ParametersAction':
+                    parameters = elem.get('parameters', {})
+                    break
+            return {pair['name']: pair.get('value') for pair in parameters}
+
+        return {}
 
     def get_changeset_items(self):
         """
@@ -116,10 +136,25 @@ class Build(JenkinsBase):
             "user": "username"
         }
         """
-        if 'items' in self._data['changeSet']:
-            return self._data['changeSet']['items']
-        else:
-            return []
+        if 'changeSet' in self._data:
+            if 'items' in self._data['changeSet']:
+                return self._data['changeSet']['items']
+        elif 'changeSets' in self._data:
+            if 'items' in self._data['changeSets']:
+                return self._data['changeSets']['items']
+        return []
+
+    def _get_vcs(self):
+        """
+        Returns a string VCS.
+        By default, 'git' will be used.
+        """
+        vcs = 'git'
+        if 'changeSet' in self._data and 'kind' in self._data['changeSet']:
+            vcs = self._data['changeSet']['kind'] or 'git'
+        elif 'changeSets' in self._data and 'kind' in self._data['changeSets']:
+            vcs = self._data['changeSets']['kind'] or 'git'
+        return vcs
 
     def _get_svn_rev(self):
         warnings.warn(
@@ -136,7 +171,7 @@ class Build(JenkinsBase):
         _actions = [x for x in self._data['actions']
                     if x and "lastBuiltRevision" in x]
 
-        if len(_actions) > 0:
+        if _actions:
             return _actions[0]["lastBuiltRevision"]["SHA1"]
 
         return None
@@ -162,20 +197,41 @@ class Build(JenkinsBase):
     def _get_hg_rev_branch(self):
         raise NotImplementedError('_get_hg_rev_branch is not yet implemented')
 
+    def _get_git_repo_url(self):
+        # Sometimes we have None as part of actions. Filter those actions
+        # which have lastBuiltRevision in them
+        _actions = [x for x in self._data['actions']
+                    if x and "lastBuiltRevision" in x]
+        # old Jenkins version have key remoteUrl v/s the new version has a list remoteUrls
+        result = _actions[0].get("remoteUrls", _actions[0].get("remoteUrl"))
+        if isinstance(result, list):
+            result = ','.join(result)
+        return result
+
+    def _get_svn_repo_url(self):
+        raise NotImplementedError('_get_svn_repo_url is not yet implemented')
+
+    def _get_hg_repo_url(self):
+        raise NotImplementedError('_get_hg_repo_url is not yet implemented')
+
     def get_duration(self):
         return datetime.timedelta(milliseconds=self._data["duration"])
+
+    def get_build_url(self):
+        return self._data['url']
 
     def get_artifacts(self):
         data = self.poll(tree='artifacts[relativePath,fileName]')
         for afinfo in data["artifacts"]:
             url = "%s/artifact/%s" % (self.baseurl,
                                       quote(afinfo["relativePath"]))
-            af = Artifact(afinfo["fileName"], url, self)
+            af = Artifact(afinfo["fileName"], url, self,
+                          relative_path=afinfo["relativePath"])
             yield af
 
     def get_artifact_dict(self):
         return dict(
-            (af.filename, af) for af in self.get_artifacts()
+            (af.relative_path, af) for af in self.get_artifacts()
         )
 
     def get_upstream_job_name(self):
@@ -195,8 +251,7 @@ class Build(JenkinsBase):
         """
         if self.get_upstream_job_name():
             return self.get_jenkins_obj().get_job(self.get_upstream_job_name())
-        else:
-            return None
+        return None
 
     def get_upstream_build_number(self):
         """
@@ -216,8 +271,8 @@ class Build(JenkinsBase):
         upstream_job = self.get_upstream_job()
         if upstream_job:
             return upstream_job.get_build(self.get_upstream_build_number())
-        else:
-            return None
+
+        return None
 
     def get_master_job_name(self):
         """
@@ -239,8 +294,8 @@ class Build(JenkinsBase):
             "(get_master_job).")
         if self.get_master_job_name():
             return self.get_jenkins_obj().get_job(self.get_master_job_name())
-        else:
-            return None
+
+        return None
 
     def get_master_build_number(self):
         """
@@ -266,8 +321,8 @@ class Build(JenkinsBase):
         master_job = self.get_master_job()
         if master_job:
             return master_job.get_build(self.get_master_build_number())
-        else:
-            return None
+
+        return None
 
     def get_downstream_jobs(self):
         """
@@ -310,7 +365,7 @@ class Build(JenkinsBase):
         """
         downstream_job_names = self.get_downstream_job_names()
         downstream_builds = []
-        try:
+        try:  # pylint: disable=R1702
             fingerprints = self._data["fingerprint"]
             for fingerprint in fingerprints:
                 for job_usage in fingerprint['usage']:
@@ -409,12 +464,12 @@ class Build(JenkinsBase):
         return all_actions
 
     def get_causes(self):
-        '''
+        """
         Returns a list of causes. There can be multiple causes lists and
         some of the can be empty. For instance, when a build is manually
         aborted, Jenkins could add an empty causes list to the actions
         dict. Empty ones are ignored.
-        '''
+        """
         all_causes = []
         for dct_action in self._data["actions"]:
             if dct_action is None:
@@ -424,9 +479,9 @@ class Build(JenkinsBase):
         return all_causes
 
     def get_timestamp(self):
-        '''
+        """
         Returns build timestamp in UTC
-        '''
+        """
         # Java timestamps are given in miliseconds since the epoch start!
         naive_timestamp = datetime.datetime(
             *time.gmtime(self._data['timestamp'] / 1000.0)[:6])
@@ -448,6 +503,37 @@ class Build(JenkinsBase):
         else:
             raise JenkinsAPIException('Unknown content type for console')
 
+    def stream_logs(self, interval=0):
+        """
+        Return generator which streams parts of text console.
+        """
+        url = "%s/logText/progressiveText" % self.baseurl
+        size = 0
+        more_data = True
+        while more_data:
+            resp = self.job.jenkins.requester.get_url(url, params={'start': size})
+            content = resp.content
+            if content:
+                if isinstance(content, str):
+                    yield content
+                elif isinstance(content, bytes):
+                    yield content.decode('ISO-8859-1')
+                else:
+                    raise JenkinsAPIException('Unknown content type for console')
+            size = resp.headers['X-Text-Size']
+            more_data = resp.headers.get('X-More-Data')
+            sleep(interval)
+
+    def get_estimated_duration(self):
+        """
+        Return the estimated build duration (in seconds) or none.
+        """
+        try:
+            eta_ms = self._data["estimatedDuration"]
+            return max(0, eta_ms / 1000.0)
+        except KeyError:
+            return None
+
     def stop(self):
         """
         Stops the build execution if it's running
@@ -456,6 +542,37 @@ class Build(JenkinsBase):
         """
         if self.is_running():
             url = "%s/stop" % self.baseurl
-            self.job.jenkins.requester.post_and_confirm_status(url, data='')
+            # Starting from Jenkins 2.7 stop function sometimes breaks
+            # on redirect to job page. Call to stop works fine, and
+            # we don't need to have job page here.
+            self.job.jenkins.requester.post_and_confirm_status(
+                url, data='', valid=[302, 200, 500, ])
             return True
         return False
+
+    def get_env_vars(self):
+        """
+        Return the environment variables.
+
+        This method is using the Environment Injector plugin:
+        https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin
+        """
+        url = self.python_api_url('%s/injectedEnvVars' % self.baseurl)
+        try:
+            data = self.get_data(url, params={'depth': self.depth})
+        except HTTPError as ex:
+            warnings.warn('Make sure the Environment Injector plugin '
+                          'is installed.')
+            raise ex
+        return data['envMap']
+
+    def toggle_keep(self):
+        """
+        Toggle "keep this build forever" on and off
+        """
+        url = '%s/toggleLogKeep' % self.baseurl
+        self.get_jenkins_obj().requester.post_and_confirm_status(url, data={})
+        self._data = self._poll()
+
+    def is_kept_forever(self):
+        return self._data["keepLog"]

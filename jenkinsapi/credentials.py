@@ -4,13 +4,11 @@ container-like interface for all of the Global credentials defined on a single
 Jenkins node.
 """
 import logging
-try:
-    from urllib import urlencode
-except ImportError:
-    # Python3
-    from urllib.parse import urlencode
+
+from six.moves.urllib.parse import urlencode
 from jenkinsapi.credential import Credential
 from jenkinsapi.credential import UsernamePasswordCredential
+from jenkinsapi.credential import SecretTextCredential
 from jenkinsapi.credential import SSHKeyCredential
 from jenkinsapi.jenkinsbase import JenkinsBase
 from jenkinsapi.custom_exceptions import JenkinsAPIException
@@ -25,6 +23,7 @@ class Credentials(JenkinsBase):
 
     Returns a list of Credential Objects.
     """
+
     def __init__(self, baseurl, jenkins_obj):
         self.baseurl = baseurl
         self.jenkins = jenkins_obj
@@ -91,22 +90,35 @@ class Credentials(JenkinsBase):
         if description not in self:
             params = credential.get_attributes()
             url = (
-                '%s/credential-store/domain/_/createCredentials'
-                % self.jenkins.baseurl
+                '%s/createCredentials'
+                % self.baseurl
             )
+            try:
+                self.jenkins.requester.post_and_confirm_status(
+                    url, params={}, data=urlencode(params)
+                )
+            except JenkinsAPIException as jae:
+                raise JenkinsAPIException('Latest version of Credentials '
+                                          'plugin is required to be able '
+                                          'to create credentials. '
+                                          'Original exception: %s' % str(jae))
         else:
-            raise JenkinsAPIException('Updating credentials is not supported '
-                                      'by jenkinsapi')
-
-        try:
-            self.jenkins.requester.post_and_confirm_status(
-                url, params={}, data=urlencode(params)
+            cred_id = self[description].credential_id
+            credential.credential_id = cred_id
+            params = credential.get_attributes_xml()
+            url = (
+                '%s/credential/%s/config.xml'
+                % (self.baseurl, cred_id)
             )
-        except JenkinsAPIException as jae:
-            raise JenkinsAPIException('Latest version of Credentials '
-                                      'plugin is required to be able '
-                                      'to create/update credentials. '
-                                      'Original exception: %s' % str(jae))
+            try:
+                self.jenkins.requester.post_xml_and_confirm_status(
+                    url, params={}, data=params
+                )
+            except JenkinsAPIException as jae:
+                raise JenkinsAPIException('Latest version of Credentials '
+                                          'plugin is required to be able '
+                                          'to update credentials. '
+                                          'Original exception: %s' % str(jae))
 
         self.poll()
         self.credentials = self._data['credentials']
@@ -117,12 +129,15 @@ class Credentials(JenkinsBase):
         return self[item] if item in self else default
 
     def __delitem__(self, description):
+        if description not in self:
+            raise KeyError(
+                'Credential with description "%s" not found' % description)
         params = {
             'Submit': 'OK',
             'json': {}
         }
-        url = ('%s/credential-store/domain/_/credential/%s/doDelete'
-               % (self.jenkins.baseurl, self[description].credential_id))
+        url = ('%s/credential/%s/doDelete'
+               % (self.baseurl, self[description].credential_id))
         try:
             self.jenkins.requester.post_and_confirm_status(
                 url, params={}, data=urlencode(params)
@@ -142,7 +157,59 @@ class Credentials(JenkinsBase):
             cr = UsernamePasswordCredential(cred_dict)
         elif cred_dict['typeName'] == 'SSH Username with private key':
             cr = SSHKeyCredential(cred_dict)
+        elif cred_dict['typeName'] == 'Secret text':
+            cr = SecretTextCredential(cred_dict)
         else:
             cr = Credential(cred_dict)
 
         return cr
+
+
+class Credentials2x(Credentials):
+    """
+    This class provides a container-like API which gives
+    access to all global credentials on a Jenkins node.
+
+    Returns a list of Credential Objects.
+    """
+
+    def _poll(self, tree=None):
+        url = self.python_api_url(self.baseurl) + '?depth=2'
+        data = self.get_data(url, tree=tree)
+        credentials = data['credentials']
+        new_creds = {}
+        for cred_dict in credentials:
+            cred_dict['credential_id'] = cred_dict['id']
+            new_creds[cred_dict['id']] = self._make_credential(cred_dict)
+
+        data['credentials'] = new_creds
+
+        return data
+
+
+class CredentialsById(Credentials2x):
+    """
+    This class provides a container-like API which gives
+    access to all global credentials on a Jenkins node.
+
+    Returns a list of Credential Objects.
+    """
+
+    def __iter__(self):
+        for cred in self.credentials.values():
+            yield cred.credential_id
+
+    def __contains__(self, credential_id):
+        return credential_id in self.keys()
+
+    def iteritems(self):
+        for cred in self.credentials.values():
+            yield cred.credential_id, cred
+
+    def __getitem__(self, credential_id):
+        for cred in self.credentials.values():
+            if cred.credential_id == credential_id:
+                return cred
+
+        raise KeyError('Credential with credential_id "%s" not found'
+                       % credential_id)
