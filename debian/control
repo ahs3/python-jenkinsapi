@@ -2,14 +2,15 @@ Source: python-jenkinsapi
 Section: python
 Priority: optional
 Maintainer: Al Stone <ahs3@debian.org>
-Build-Depends: debhelper (>= 8.0.0), python-all-dev, python-lxml, python-setuptools
+Build-Depends: debhelper (>= 8.0.0), python3-all-dev, python3-lxml, 
+ python3-setuptools, python3-pytest, python3-pylint
 Standards-Version: 4.5.0
 Homepage: http://pypi.python.org/pypi/jenkinsapi
 Vcs-Git: https://github.com/ahs3/python-jenkinsapi
 
 Package: python3-jenkinsapi
 Architecture: all
-Depends: python3-lxml, python3-bs4, python3-pkg-resources, python3-pytest,
+Depends: python3-lxml, python3-bs4, python3-pkg-resources,
  ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
 Description: bindings for Python usage of the Jenkins remote API
