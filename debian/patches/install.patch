@@ -12,4 +12,4 @@ diff -Naur orig-jenkinsapi/Makefile fixed-jenkinsapi/Makefile
  	python3 setup.py sdist bdist_wheel
  
 +install:
-+	python3 setup.py install
++	python3 setup.py install --prefix=/usr
