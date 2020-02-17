@@ -1,24 +1,18 @@
-diff -Naur python-jenkinsapi.github/Makefile fixed-jenkinsapi/Makefile
---- python-jenkinsapi.github/Makefile	2020-02-16 16:46:46.767307926 -0700
-+++ fixed-jenkinsapi/Makefile	2020-02-16 17:33:22.240920190 -0700
-@@ -1,17 +1,12 @@
+diff -Naur orig-jenkinsapi/Makefile fixed-jenkinsapi/Makefile
+--- orig-jenkinsapi/Makefile	2020-02-16 17:41:39.404723443 -0700
++++ fixed-jenkinsapi/Makefile	2020-02-16 17:42:30.377108829 -0700
+@@ -1,7 +1,4 @@
 -.PHONY: test lint tox coverage dist
 -
 -test:
--	py.test -sv jenkinsapi_tests
+-	py.test-3 -sv jenkinsapi_tests
 +.PHONY: lint tox dist
  
  lint:
  	pycodestyle
--	pylint jenkinsapi/*.py
-+	pylint3 jenkinsapi/*.py
- 
- tox:
- 	tox
- 
+@@ -13,5 +10,3 @@
  dist:
--	python setup.py sdist bdist_wheel
-+	python3 setup.py sdist bdist_wheel
+ 	python3 setup.py sdist bdist_wheel
  
 -coverage:
--	py.test -sv --cov=jenkinsapi --cov-report=term-missing --cov-report=xml jenkinsapi_tests
+-	py.test-3 -sv --cov=jenkinsapi --cov-report=term-missing --cov-report=xml jenkinsapi_tests
