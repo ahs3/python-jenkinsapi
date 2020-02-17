@@ -1,3 +1,4 @@
 python3.patch
 notest.patch
 codestyle.patch
+install.patch
