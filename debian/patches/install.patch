@@ -1,12 +1,11 @@
-diff -Naur orig-jenkinsapi/Makefile fixed-jenkinsapi/Makefile
---- orig-jenkinsapi/Makefile	2020-02-16 18:11:36.225956771 -0700
-+++ fixed-jenkinsapi/Makefile	2020-02-16 18:13:10.706654980 -0700
+--- a/Makefile
++++ b/Makefile
 @@ -1,4 +1,4 @@
 -.PHONY: lint tox dist
 +.PHONY: lint tox dist install
  
  lint:
- 	pylint3 jenkinsapi/*.py
+ 	pylint jenkinsapi/*.py
 @@ -9,3 +9,5 @@
  dist:
  	python3 setup.py sdist bdist_wheel

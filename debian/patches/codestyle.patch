@@ -1,11 +1,10 @@
-diff -Naur orig-jenkinsapi/Makefile fixed-jenkinsapi/Makefile
---- orig-jenkinsapi/Makefile	2020-02-16 17:49:45.404336646 -0700
-+++ fixed-jenkinsapi/Makefile	2020-02-16 17:50:25.352625604 -0700
+--- a/Makefile
++++ b/Makefile
 @@ -1,7 +1,6 @@
  .PHONY: lint tox dist
  
  lint:
 -	pycodestyle
- 	pylint3 jenkinsapi/*.py
+ 	pylint jenkinsapi/*.py
  
  tox:
