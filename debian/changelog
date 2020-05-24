@@ -1,10 +1,11 @@
-python-jenkinsapi (0.3.11-2) UNRELEASED; urgency=medium
+python-jenkinsapi (0.3.11-2) unstable; urgency=medium
 
   * Fix "FTBFS due to missing build deps and pylint command" -- used the
     patch to correct build-deps and pylint usage (Closes: #951681)
   * Fix "missing (unversioned) Breaks+Replaces: python-jenkinsapi" -- just
     needed to add Breaks+Replace to control file since python3-jenkinsapi
     replaces the old package completely (Closes: #952750)
+  * Minor lintian fix to remove a .gitignore file from build
 
  -- Al Stone <ahs3@debian.org>  Sun, 24 May 2020 15:09:34 -0600
 
