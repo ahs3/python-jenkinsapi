@@ -13,6 +13,8 @@ Architecture: all
 Depends: python3-lxml, python3-bs4, python3-pkg-resources,
  ${python3:Depends}, ${misc:Depends}
 Provides: ${python3:Provides}
+Replaces: python-jenkinsapi
+Breaks: python-jenkinsapi
 Description: bindings for Python usage of the Jenkins remote API
  Jenkins is the market leading continuous integration system, originally
  created by Kohsuke Kawaguchi. This API makes Jenkins even easier to use
