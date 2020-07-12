@@ -1,3 +1,9 @@
+python-jenkinsapi (0.3.11-3) unstable; urgency=medium
+
+  * Force source only upload
+
+ -- Al Stone <ahs3@debian.org>  Sun, 12 Jul 2020 14:23:20 -0600
+
 python-jenkinsapi (0.3.11-2) unstable; urgency=medium
 
   * Fix "FTBFS due to missing build deps and pylint command" -- used the
