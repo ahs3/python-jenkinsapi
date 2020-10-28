@@ -1,6 +1,6 @@
-diff -Naur debian-scm/jenkinsapi/credential.py install-fix/jenkinsapi/credential.py
---- debian-scm/jenkinsapi/credential.py	2020-02-16 16:46:46.767307926 -0700
-+++ install-fix/jenkinsapi/credential.py	2020-10-27 21:03:49.025512695 -0600
+diff -Naur a/jenkinsapi/credential.py b/jenkinsapi/credential.py
+--- a/jenkinsapi/credential.py	2020-02-16 16:46:46.767307926 -0700
++++ b/jenkinsapi/credential.py	2020-10-27 21:03:49.025512695 -0600
 @@ -83,7 +83,7 @@
  
      def __init__(self, cred_dict):
@@ -70,9 +70,9 @@ diff -Naur debian-scm/jenkinsapi/credential.py install-fix/jenkinsapi/credential
          }
 -        return super(AmazonWebServicesCredentials, self)._get_attributes_xml(data)
 +        return super()._get_attributes_xml(data)
-diff -Naur debian-scm/jenkinsapi/credentials.py install-fix/jenkinsapi/credentials.py
---- debian-scm/jenkinsapi/credentials.py	2020-02-16 16:46:46.767307926 -0700
-+++ install-fix/jenkinsapi/credentials.py	2020-10-27 21:04:33.021889279 -0600
+diff -Naur a/jenkinsapi/credentials.py b/jenkinsapi/credentials.py
+--- a/jenkinsapi/credentials.py	2020-02-16 16:46:46.767307926 -0700
++++ b/jenkinsapi/credentials.py	2020-10-27 21:04:33.021889279 -0600
 @@ -100,8 +100,8 @@
              except JenkinsAPIException as jae:
                  raise JenkinsAPIException('Latest version of Credentials '
@@ -104,9 +104,9 @@ diff -Naur debian-scm/jenkinsapi/credentials.py install-fix/jenkinsapi/credentia
          self.poll()
          self.credentials = self._data['credentials']
          if description in self:
-diff -Naur debian-scm/jenkinsapi/fingerprint.py install-fix/jenkinsapi/fingerprint.py
---- debian-scm/jenkinsapi/fingerprint.py	2020-02-16 16:46:46.767307926 -0700
-+++ install-fix/jenkinsapi/fingerprint.py	2020-10-27 20:59:57.595597808 -0600
+diff -Naur a/jenkinsapi/fingerprint.py b/jenkinsapi/fingerprint.py
+--- a/jenkinsapi/fingerprint.py	2020-02-16 16:46:46.767307926 -0700
++++ b/jenkinsapi/fingerprint.py	2020-10-27 20:59:57.595597808 -0600
 @@ -96,14 +96,14 @@
      def validate(self):
          try:
@@ -126,9 +126,9 @@ diff -Naur debian-scm/jenkinsapi/fingerprint.py install-fix/jenkinsapi/fingerpri
          return True
  
      def get_info(self):
-diff -Naur debian-scm/jenkinsapi/jenkinsbase.py install-fix/jenkinsapi/jenkinsbase.py
---- debian-scm/jenkinsapi/jenkinsbase.py	2020-02-16 16:46:46.767307926 -0700
-+++ install-fix/jenkinsapi/jenkinsbase.py	2020-10-27 20:58:54.431099252 -0600
+diff -Naur a/jenkinsapi/jenkinsbase.py b/jenkinsapi/jenkinsbase.py
+--- a/jenkinsapi/jenkinsbase.py	2020-02-16 16:46:46.767307926 -0700
++++ b/jenkinsapi/jenkinsbase.py	2020-10-27 20:58:54.431099252 -0600
 @@ -84,9 +84,9 @@
              response.raise_for_status()
          try:
@@ -141,9 +141,9 @@ diff -Naur debian-scm/jenkinsapi/jenkinsbase.py install-fix/jenkinsapi/jenkinsba
  
      def pprint(self):
          """
-diff -Naur debian-scm/jenkinsapi/job.py install-fix/jenkinsapi/job.py
---- debian-scm/jenkinsapi/job.py	2020-02-16 16:46:46.775307980 -0700
-+++ install-fix/jenkinsapi/job.py	2020-10-27 20:58:21.502844386 -0600
+diff -Naur a/jenkinsapi/job.py b/jenkinsapi/job.py
+--- a/jenkinsapi/job.py	2020-02-16 16:46:46.775307980 -0700
++++ b/jenkinsapi/job.py	2020-10-27 20:58:21.502844386 -0600
 @@ -89,7 +89,7 @@
          return branches
  
@@ -196,9 +196,9 @@ diff -Naur debian-scm/jenkinsapi/job.py install-fix/jenkinsapi/job.py
  
      def __delitem__(self, build_number):
          self.delete_build(build_number)
-diff -Naur debian-scm/jenkinsapi/node.py install-fix/jenkinsapi/node.py
---- debian-scm/jenkinsapi/node.py	2020-02-16 16:46:46.775307980 -0700
-+++ install-fix/jenkinsapi/node.py	2020-10-27 20:54:01.232984206 -0600
+diff -Naur a/jenkinsapi/node.py b/jenkinsapi/node.py
+--- a/jenkinsapi/node.py	2020-02-16 16:46:46.775307980 -0700
++++ b/jenkinsapi/node.py	2020-10-27 20:54:01.232984206 -0600
 @@ -118,10 +118,10 @@
                  credential = self.jenkins.credentials[
                      na['credential_description']
@@ -212,9 +212,9 @@ diff -Naur debian-scm/jenkinsapi/node.py install-fix/jenkinsapi/node.py
  
              retries = na['max_num_retries'] if 'max_num_retries' in na else ''
              re_wait = na['retry_wait_time'] if 'retry_wait_time' in na else ''
-diff -Naur debian-scm/jenkinsapi/nodes.py install-fix/jenkinsapi/nodes.py
---- debian-scm/jenkinsapi/nodes.py	2020-02-16 16:46:46.775307980 -0700
-+++ install-fix/jenkinsapi/nodes.py	2020-10-27 20:50:45.423835163 -0600
+diff -Naur a/jenkinsapi/nodes.py b/jenkinsapi/nodes.py
+--- a/jenkinsapi/nodes.py	2020-02-16 16:46:46.775307980 -0700
++++ b/jenkinsapi/nodes.py	2020-10-27 20:50:45.423835163 -0600
 @@ -75,8 +75,8 @@
              nodename = item['displayName']
              try:
@@ -237,9 +237,9 @@ diff -Naur debian-scm/jenkinsapi/nodes.py install-fix/jenkinsapi/nodes.py
  
      def values(self):
          """
-diff -Naur debian-scm/jenkinsapi/plugins.py install-fix/jenkinsapi/plugins.py
---- debian-scm/jenkinsapi/plugins.py	2020-02-16 16:46:46.775307980 -0700
-+++ install-fix/jenkinsapi/plugins.py	2020-10-27 20:49:44.063536416 -0600
+diff -Naur a/jenkinsapi/plugins.py b/jenkinsapi/plugins.py
+--- a/jenkinsapi/plugins.py	2020-02-16 16:46:46.775307980 -0700
++++ b/jenkinsapi/plugins.py	2020-10-27 20:49:44.063536416 -0600
 @@ -82,8 +82,8 @@
      def __getitem__(self, plugin_name):
          try:
@@ -251,9 +251,9 @@ diff -Naur debian-scm/jenkinsapi/plugins.py install-fix/jenkinsapi/plugins.py
  
      def __setitem__(self, shortName, plugin):
          """
-diff -Naur debian-scm/jenkinsapi/queue.py install-fix/jenkinsapi/queue.py
---- debian-scm/jenkinsapi/queue.py	2020-02-16 16:46:46.775307980 -0700
-+++ install-fix/jenkinsapi/queue.py	2020-10-27 20:48:12.011156888 -0600
+diff -Naur a/jenkinsapi/queue.py b/jenkinsapi/queue.py
+--- a/jenkinsapi/queue.py	2020-02-16 16:46:46.775307980 -0700
++++ b/jenkinsapi/queue.py	2020-10-27 20:48:12.011156888 -0600
 @@ -170,11 +170,11 @@
      def get_build_number(self):
          try:
@@ -270,142 +270,3 @@ diff -Naur debian-scm/jenkinsapi/queue.py install-fix/jenkinsapi/queue.py
 -            raise NotBuiltYet()
 +        except KeyError as exc:
 +            raise NotBuiltYet() from exc
-diff -Naur debian-scm/Makefile install-fix/Makefile
---- debian-scm/Makefile	2020-02-16 16:46:46.767307926 -0700
-+++ install-fix/Makefile	2020-10-27 20:25:31.785018612 -0600
-@@ -1,17 +1,13 @@
--.PHONY: test lint tox coverage dist
--
--test:
--	py.test -sv jenkinsapi_tests
-+.PHONY: lint tox dist install
- 
- lint:
--	pycodestyle
- 	pylint jenkinsapi/*.py
- 
- tox:
- 	tox
- 
- dist:
--	python setup.py sdist bdist_wheel
-+	python3 setup.py sdist bdist_wheel
- 
--coverage:
--	py.test -sv --cov=jenkinsapi --cov-report=term-missing --cov-report=xml jenkinsapi_tests
-+install:
-+	python3 setup.py install --prefix=${DESTDIR}/usr
-diff -Naur debian-scm/.pc/applied-patches install-fix/.pc/applied-patches
---- debian-scm/.pc/applied-patches	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/applied-patches	2020-10-27 20:36:14.447239048 -0600
-@@ -0,0 +1,5 @@
-+python3.patch
-+notest.patch
-+codestyle.patch
-+install.patch
-+pylint.patch
-diff -Naur debian-scm/.pc/codestyle.patch/Makefile install-fix/.pc/codestyle.patch/Makefile
---- debian-scm/.pc/codestyle.patch/Makefile	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/codestyle.patch/Makefile	2020-10-27 20:23:40.220077140 -0600
-@@ -0,0 +1,12 @@
-+.PHONY: lint tox dist
-+
-+lint:
-+	pycodestyle
-+	pylint jenkinsapi/*.py
-+
-+tox:
-+	tox
-+
-+dist:
-+	python3 setup.py sdist bdist_wheel
-+
-diff -Naur debian-scm/.pc/install.patch/Makefile install-fix/.pc/install.patch/Makefile
---- debian-scm/.pc/install.patch/Makefile	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/install.patch/Makefile	2020-10-27 20:23:40.244077336 -0600
-@@ -0,0 +1,11 @@
-+.PHONY: lint tox dist
-+
-+lint:
-+	pylint jenkinsapi/*.py
-+
-+tox:
-+	tox
-+
-+dist:
-+	python3 setup.py sdist bdist_wheel
-+
-diff -Naur debian-scm/.pc/notest.patch/Makefile install-fix/.pc/notest.patch/Makefile
---- debian-scm/.pc/notest.patch/Makefile	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/notest.patch/Makefile	2020-10-27 20:23:40.200076977 -0600
-@@ -0,0 +1,17 @@
-+.PHONY: test lint tox coverage dist
-+
-+test:
-+	py.test-3 -sv jenkinsapi_tests
-+
-+lint:
-+	pycodestyle
-+	pylint jenkinsapi/*.py
-+
-+tox:
-+	tox
-+
-+dist:
-+	python3 setup.py sdist bdist_wheel
-+
-+coverage:
-+	py.test-3 -sv --cov=jenkinsapi --cov-report=term-missing --cov-report=xml jenkinsapi_tests
-diff -Naur debian-scm/.pc/pylint.patch/Makefile install-fix/.pc/pylint.patch/Makefile
---- debian-scm/.pc/pylint.patch/Makefile	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/pylint.patch/Makefile	2020-10-27 20:24:20.916413374 -0600
-@@ -0,0 +1,13 @@
-+.PHONY: lint tox dist install
-+
-+lint:
-+	pylint3 jenkinsapi/*.py
-+
-+tox:
-+	tox
-+
-+dist:
-+	python3 setup.py sdist bdist_wheel
-+
-+install:
-+	python3 setup.py install --prefix=${DESTDIR}/usr
-diff -Naur debian-scm/.pc/python3.patch/Makefile install-fix/.pc/python3.patch/Makefile
---- debian-scm/.pc/python3.patch/Makefile	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/python3.patch/Makefile	2020-10-27 20:23:40.172076749 -0600
-@@ -0,0 +1,17 @@
-+.PHONY: test lint tox coverage dist
-+
-+test:
-+	py.test -sv jenkinsapi_tests
-+
-+lint:
-+	pycodestyle
-+	pylint jenkinsapi/*.py
-+
-+tox:
-+	tox
-+
-+dist:
-+	python setup.py sdist bdist_wheel
-+
-+coverage:
-+	py.test -sv --cov=jenkinsapi --cov-report=term-missing --cov-report=xml jenkinsapi_tests
-diff -Naur debian-scm/.pc/.quilt_patches install-fix/.pc/.quilt_patches
---- debian-scm/.pc/.quilt_patches	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/.quilt_patches	2020-10-27 20:23:40.156076618 -0600
-@@ -0,0 +1 @@
-+/home/ahs3/debian/python-jenkinsapi/debian-scm/debian/patches
-diff -Naur debian-scm/.pc/.quilt_series install-fix/.pc/.quilt_series
---- debian-scm/.pc/.quilt_series	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/.quilt_series	2020-10-27 20:23:40.156076618 -0600
-@@ -0,0 +1 @@
-+series
-diff -Naur debian-scm/.pc/.version install-fix/.pc/.version
---- debian-scm/.pc/.version	1969-12-31 17:00:00.000000000 -0700
-+++ install-fix/.pc/.version	2020-10-27 20:23:40.156076618 -0600
-@@ -0,0 +1 @@
-+2
