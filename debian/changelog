@@ -1,3 +1,10 @@
+python-jenkinsapi (0.3.11-4) unstable; urgency=medium
+
+  * Fix FTBS due to pylint/python3 changes (Closes: #971179)
+  * Add Build-Depends for pylint3 requirements
+
+ -- Al Stone <ahs3@debian.org>  Tue, 27 Oct 2020 21:19:59 -0600
+
 python-jenkinsapi (0.3.11-3) unstable; urgency=medium
 
   * Force source only upload
