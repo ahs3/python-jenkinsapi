@@ -1,0 +1,13 @@
+Index: install-fix/Makefile
+===================================================================
+--- install-fix.orig/Makefile
++++ install-fix/Makefile
+@@ -1,7 +1,7 @@
+ .PHONY: lint tox dist install
+ 
+ lint:
+-	pylint jenkinsapi/*.py
++	pylint3 jenkinsapi/*.py
+ 
+ tox:
+ 	tox
