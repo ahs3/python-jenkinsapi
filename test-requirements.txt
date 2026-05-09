@@ -1,4 +1,4 @@
-pytest==3.7.0
+pytest==9.0.3
 pytest-mock
 pytest-cov
 pycodestyle>=2.3.1
